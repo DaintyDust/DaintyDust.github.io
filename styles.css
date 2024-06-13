@@ -1,0 +1,135 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
+.header {
+    background-color: #0f0f0f;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* Allow header content to grow and center */
+}
+
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Adjust spacing between logo and title */
+}
+
+.nick-studios-logo {
+    width: 40px; /* Adjust size of Nick Studios logo */
+    height: auto;
+    margin-right: 10px; /* Adjust spacing between Nick Studios logo and title */
+    margin-left: 15px; 
+}
+
+.header-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem; /* Adjust font size of header title */
+    color: #61dafb;
+    margin: 0;
+}
+
+.header-description {
+    font-size: 1rem;
+}
+
+.social-icons {
+    display: flex;
+    align-items: center;
+    margin-right: 20px; /* Adjust spacing between social icons */
+}
+
+.social-icon {
+    width: 30px; /* Adjust size of social icons */
+    height: auto;
+    margin-left: 10px; /* Adjust spacing between social icons */
+    cursor: pointer;
+}
+
+.section {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.section-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2rem;
+    color: #61dafb;
+    margin-bottom: 2rem;
+}
+
+.game-container {
+    background-color: #0f0f0f;
+    padding: 1rem;
+    border-radius: 10px;
+    position: relative;
+}
+
+#snake-game {
+    display: block;
+    margin: 0 auto;
+    border: 2px solid #61dafb;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+}
+
+.score {
+    font-size: 1.5rem;
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+
+.game-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #61dafb;
+    color: #1a1a1a;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.game-button:hover {
+    background-color: #ffffff;
+    color: #1a1a1a;
+}
+
+.game-over {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.game-over p {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    color: #ff0000;
+}
