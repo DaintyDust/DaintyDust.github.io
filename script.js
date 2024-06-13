@@ -27,16 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGameRunning = false;
     let canChangeDirection = true;
 
-    // redirects
-   const path = window.location.pathname;
+    // Handle redirects and 404 error
+    const path = window.location.pathname;
 
     // Check if the path is root or a valid redirect
     if (path !== "/" && !redirects[path]) {
-        window.location.href = "/Pages/error.html"; // Redirect to 404 page for invalid paths
+        // Redirect to error page if path is not root and not in redirects
+        window.location.href = "/Pages/error.html";
     } else if (path === "/snake") {
-        window.location.href = "/Pages/snake.html"; // Redirect to snake game page for /snake
+        // Redirect to snake game page for /snake
+        window.location.href = "/Pages/snake.html";
     }
-    // discord profile copy
+
+    // Discord profile copy
     const discordIcon = document.getElementById('discord-icon');
     discordIcon.addEventListener('click', () => {
         const discordUsername = 'DaintyDust'; 
@@ -51,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    // snake game
+    // Snake game
     startButton.addEventListener('click', startGame);
     respawnButton.addEventListener('click', startGame);
     document.addEventListener('keydown', event => {
