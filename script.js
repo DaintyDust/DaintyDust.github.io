@@ -28,14 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let canChangeDirection = true;
 
     // redirects
-    const path = window.location.pathname;
-    if (redirects[path]) {
-        window.location.href = redirects[path];
-    } else if (path === "/page") {
-        window.location.href = "/Pages/snake.html";
-    } else {
-        // Redirect to 404 page for any other paths
-        window.location.href = "/Pages/error.html";
+   const path = window.location.pathname;
+
+    // Check if the path is root or a valid redirect
+    if (path !== "/" && !redirects[path]) {
+        window.location.href = "/Pages/error.html"; // Redirect to 404 page for invalid paths
+    } else if (path === "/snake") {
+        window.location.href = "/Pages/snake.html"; // Redirect to snake game page for /snake
     }
     // discord profile copy
     const discordIcon = document.getElementById('discord-icon');
