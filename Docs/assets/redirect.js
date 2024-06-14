@@ -12,7 +12,7 @@ const redirects = {
 };
 
 const path = window.location.pathname;
-
+console.log(redirects, path, redirects[path])
 if (redirects[path]) {
     window.location.href = redirects[path];
 } else if (path !== "/" && path !== "/Docs/index.html" && path !== "/Docs/snake.html") {
