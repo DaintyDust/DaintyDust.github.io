@@ -11,6 +11,8 @@ const redirects = {
 
 function handleRedirect() {
     const path = window.location.pathname;
+    console.log(path);
+    console.log(redirects[path]);
     if (redirects[path]) {
         window.location.href = redirects[path];
     }
