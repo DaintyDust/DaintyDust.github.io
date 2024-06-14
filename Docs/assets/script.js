@@ -9,16 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const scoreDisplay = document.getElementById('score');
     const box = 20;
     const canvasSize = 400;
-    const redirects = {
-        "/nanotech": "https://www.roblox.com/games/11569994474/nanotech-project-NPRF",
-        "/nprf": "https://www.roblox.com/games/11569994474/nanotech-project-NPRF",
-        "/roblox": "https://www.roblox.com/users/544088422/profile",
-        "/youtube": "https://youtube.com/@DaintyDust",
-        "/twitter": "https://twitter.com/NickV535",
-        "/x": "https://twitter.com/NickV535",
-        "/github": "https://github.com/DaintyDust",
-        "/group": "https://www.roblox.com/groups/8193767/Nick-Studios#!/about",
-    };
     let snake;
     let food;
     let score;
@@ -26,18 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let game;
     let isGameRunning = false;
     let canChangeDirection = true;
-
-    // Handle redirects and 404 error
-    const path = window.location.pathname;
-
-    // Check if the path is root or a valid redirect
-    if (path !== "/" && !redirects[path]) {
-        // Redirect to error page if path is not root and not in redirects
-        window.location.href = "/Docs/error.html";
-    } else if (path === "/snake") {
-        // Redirect to snake game page for /snake
-        window.location.href = "/Docs/snake.html";
-    }
 
     // Discord profile copy
     const discordIcon = document.getElementById('discord-icon');
