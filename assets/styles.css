@@ -38,6 +38,18 @@ body {
     margin-left: 15px; 
 }
 
+h1, h2 {
+    /*width:30%;*/
+    /*padding-top:4px;
+    padding-left:7px;*/
+    transition: background 0.4s ease, width 0.4s ease, letter-spacing 0.4s ease;
+}
+h1:hover, h2:hover { 
+    letter-spacing:3px;
+}
+h1:active, h2:active {
+    letter-spacing:1px;
+}
 .header-title {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem; /* Adjust font size of header title */
@@ -53,6 +65,12 @@ body {
     display: flex;
     align-items: center;
     margin-right: 20px; /* Adjust spacing between social icons */
+}
+
+.social-icon:hover {
+    margin-left:5px;
+    margin-right: -5px;
+    width:42px;
 }
 
 .social-icon {
@@ -114,6 +132,7 @@ body {
 .game-button:hover {
     background-color: #ffffff;
     color: #1a1a1a;
+    padding: 12px 22px;
 }
 
 .game-over {
