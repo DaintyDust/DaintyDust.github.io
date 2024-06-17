@@ -78,6 +78,7 @@ h1:active, h2:active {
     height: auto;
     margin-left: 10px; /* Adjust spacing between social icons */
     cursor: pointer;
+    transition: all 0.20s; 
 }
 
 .section {
