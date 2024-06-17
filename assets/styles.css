@@ -126,13 +126,20 @@ h1:active, h2:active {
     color: #1a1a1a;
     cursor: pointer;
     margin-top: 10px;
-    transition: background-color 0.3s ease;
+    transition: all 0.35s, background-color 0.2s;
+    border: 0px solid #ffffff40;
+    shadow: 0 0 0px rgba(
+    0, 0, 0, 0.5);
+    scale:1.05;
 }
 
 .game-button:hover {
     background-color: #ffffff;
     color: #1a1a1a;
     padding: 12px 22px;
+    scale:1.15;
+    box-shadow: 0 0 13px rgba(0, 0, 0, 0.5);
+
 }
 
 .game-over {
