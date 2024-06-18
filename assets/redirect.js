@@ -4,6 +4,7 @@ const redirects = {
     "/roblox": "https://www.roblox.com/users/544088422/profile",
     "/profile": "https://www.roblox.com/users/544088422/profile",
     "/youtube": "https://youtube.com/@DaintyDust",
+     "/yt": "https://youtube.com/@DaintyDust",
     "/twitter": "https://twitter.com/NickV535",
     "/x": "https://twitter.com/NickV535",
     "/github": "https://github.com/DaintyDust",
