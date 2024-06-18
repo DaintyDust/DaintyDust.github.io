@@ -1,33 +1,17 @@
-<!DOCTYPE html>
-<html class=" raqxejutp idc0_350">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <style type="text/css" id="ctre_styles">
-        #ctre_wnd {
-            position: fixed; bottom: 0; right: 10px;
-            background: #fff; box-shadow: 0px 0px 40px rgba(0,0,0,0.15);
-            border-radius: 3px 3px 0 0;
-            z-index: 2147483647;
-        }
-        @media (prefers-color-scheme: dark) {
-            #ctre_wnd { background: #000; box-shadow: 0px 0px 40px rgba(255,255,255,0.15); }
-        }
-    </style>
-</head>
-<body style="margin: 0px;">
-    <div id="themeDiv" style="width: 100%; height: 100%; background-size: 100%; background-image: url('https://daintydust.github.io/assets/images/ROPRO2000.png'); filter:;">
-    </div>
-    <script type="text/javascript">
-        i = 0
-        setInterval(function() {
-            i++
-        }, 50)
-        window.addEventListener('message', message => {
-            console.log(`hue-rotate(${parseInt(message.data.h)}) saturate(${parseFloat(message.data.s)}) brightness(${parseFloat(message.data.l)})`)
-            if (message.data.type == "color-adjustment") {
-                document.getElementById('themeDiv').style.filter = `hue-rotate(${parseInt(message.data.h)}deg) saturate(${parseFloat(message.data.s)}) brightness(${parseFloat(message.data.l)})`
-            }
-        });
-    </script>
-</body>
-</html>
+<html class=" omisda idc0_350"><head></head><body style="margin: 0px;">
+<div id="themeDiv" style="width: 100%; height: 100%; background-size: 100%; background-image: url(https://daintydust.github.io/assets/images/ROPRO2000.png?raw=true); filter:   ;">
+</div>
+
+<script type="text/javascript">
+i = 0
+setInterval(function() {
+    i++
+}, 50)
+window.addEventListener('message', message => {
+    console.log(`hue-rotate(${parseInt(message.data.h)}) saturate(${parseFloat(message.data.s)}) brightness(${parseFloat(message.data.l)})`)
+    if (message.data.type == "color-adjustment") {
+        document.getElementById('themeDiv').style.filter = `hue-rotate(${parseInt(message.data.h)}deg) saturate(${parseFloat(message.data.s)}) brightness(${parseFloat(message.data.l)})`
+    }
+});
+</script>
+</body></html>
