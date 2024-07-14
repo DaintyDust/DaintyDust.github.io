@@ -6,6 +6,19 @@
     <title>DaintyDusts Roblox Accounts</title>
     <link rel="icon" href="assets/images/Profile Circle.png" type="image/jpg">
     <link rel="stylesheet" href="assets/styles.css">
+     <style>
+        .roblox-account {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .roblox-account img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
     <script src="assets/redirect.js"></script>
@@ -31,13 +44,13 @@
         const robloxUserIDs = [544088422, 744010503];
 
         async function fetchRobloxUserData(userId) {
-            const response = await fetch(`https://users.roblox.com/v1/users/${userId}`);
+            const response = await fetch(`https://users.roproxy.com/v1/users/${userId}`);
             const data = await response.json();
             return data;
         }
 
         async function fetchRobloxUserThumbnail(userId) {
-            const response = await fetch(`https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true`);
+            const response = await fetch(`https://thumbnails.roproxy.com/v1/users/avatar-headshot?userIds=${userId}&size=150x150&format=Png&isCircular=true`);
             const data = await response.json();
             return data.data[0].imageUrl;
         }
