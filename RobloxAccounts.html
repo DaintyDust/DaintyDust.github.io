@@ -3,21 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DaintyDusts Roblox Accounts</title>
+    <title>DaintyDust</title>
     <link rel="icon" href="assets/images/Profile Circle.png" type="image/jpg">
-    <link rel="stylesheet" href="assets/styles.css">
-     <style>
-        .roblox-account {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+    <link rel="stylesheet" href="test.css">
+    <style>
+          .roblox-account {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    background: #373434;
+    border-radius: 18px;
+    height: 100px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.roblox-account img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background: #222527;
+}
+
+.roblox-account .group-info {
+    margin-left: auto; /* Pushes group-info to the right */
+    display: flex;
+    align-items: center;
+    width: 650px; /* Adjust as necessary */
+}
+
+.group-info img {
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+}
+
+.group-info span {
+    margin-right: 10px;
+    font-size: 16px; /* Adjust as necessary */
+    color: #ffffff; /* Adjust text color */
+}
+
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow-x: hidden; /* Prevent horizontal scrollbar */
         }
-        .roblox-account img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 10px;
+
+        .section {
+            text-align: center;
         }
+
+        .section-content {
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #61dafb;
+            margin-bottom: 2rem;
+        }
+
+        #AccountsMainFrame {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #61dafb;
+            border-radius: 10px;
+            background-color: #0f0f0f;
+            padding: 1rem;
+            border-radius: 10px;
+            position: relative;
+            min-width: 1400px;
+            min-height: 600px;
+        }
+        
     </style>
 </head>
 <body>
@@ -39,9 +105,17 @@
             <a href="https://www.roblox.com/groups/8193767/Nick-Studios#!/about" target="_blank"><img src="assets/images/Nick Studios Logo.png" alt="Nick Studios Logo" class="social-icon"></a>
         </div>
     </header>
-    <div id="robloxAccountsContainer"></div>
+    <section id="Main" class="section">
+        <div class="section-content">
+            <h2 class="section-title">Roblox Accounts:</h2>
+            <div id="AccountsMainFrame" class="game-container">
+                <div id="robloxAccountsContainer"></div>
+            </div>
+        </div>
+    </section>
    <script>
-        const robloxUserIDs = [544088422, 744010503];
+         const robloxUserIDs = [544088422, 455544701, 524657251, 5073139088, 342197330, 547057686, 543343227, 523574085, 2420401490, 2717491346, 383005337, 3538200700, 3538209403];
+        const groupId = 8193767;
 
         async function fetchRobloxUserData(userId) {
             const response = await fetch(`https://users.roproxy.com/v1/users/${userId}`);
@@ -55,13 +129,34 @@
             return data.data[0].imageUrl;
         }
 
+        async function fetchGroupData(groupId) {
+            const response = await fetch(`https://groups.roproxy.com/v1/groups/${groupId}`);
+            const data = await response.json();
+            return data;
+        }
+
+        async function fetchGroupIcon(groupId) {
+            const response = await fetch(`https://thumbnails.roproxy.com/v1/groups/icons?groupIds=${groupId}&size=150x150&format=Png`);
+            const data = await response.json();
+            return data.data[0].imageUrl;
+        }
+
+        async function fetchUserGroupRole(userId, groupId) {
+            const response = await fetch(`https://groups.roproxy.com/v1/users/${userId}/groups/roles`);
+            const data = await response.json();
+            const groupRole = data.data.find(group => group.group.id === groupId);
+            return groupRole ? groupRole.role.name : 'No Role';
+        }
+
         async function displayRobloxAccounts() {
             const container = document.getElementById('robloxAccountsContainer');
+            const groupData = await fetchGroupData(groupId);
+            const groupIconUrl = await fetchGroupIcon(groupId);
 
             for (const userId of robloxUserIDs) {
-                console.log(userId)
                 const userData = await fetchRobloxUserData(userId);
                 const userThumbnail = await fetchRobloxUserThumbnail(userId);
+                const userRole = await fetchUserGroupRole(userId, groupId);
 
                 const accountDiv = document.createElement('div');
                 accountDiv.classList.add('roblox-account');
@@ -71,18 +166,63 @@
                 img.alt = `${userData.displayName}'s Profile Picture`;
 
                 const textDiv = document.createElement('div');
+                textDiv.style.display = 'flex';
+                textDiv.style.flexDirection = 'column';
 
-                const displayName = document.createElement('p');
+                const displayName = document.createElement('span');
                 displayName.textContent = userData.displayName;
+                displayName.style.fontSize = '28px';
+                displayName.style.marginBottom = "3px";
 
-                const userName = document.createElement('p');
+                const userName = document.createElement('span');
                 userName.textContent = `@${userData.name}`;
+                userName.style.textAlign = "left";
+
+                const groupInfoDiv = document.createElement('div');
+                groupInfoDiv.classList.add('group-info');
+
+                const groupInfoDiv2 = document.createElement('div');
+                groupInfoDiv2.style.display = 'flex';
+                groupInfoDiv2.style.flexDirection = 'column';
+
+                const groupInfoDiv3 = document.createElement('div');
+
+                const groupName = document.createElement('span');
+                groupName.textContent = `Group: ${groupData.name}`;
+                groupName.style.textAlign = "left";
+                groupName.style.marginBottom = "10px";
+
+                const groupMembers = document.createElement('span');
+                groupMembers.textContent = `Members: ${groupData.memberCount}`;
+
+                const groupRole = document.createElement('span');
+                groupRole.textContent = `Role: ${userRole}`;
+
+                const groupVisits = document.createElement('span');
+                groupVisits.textContent = `Visits: ${groupData.visits}`;
+
+                const groupIcon = document.createElement('img');
+                groupIcon.src = groupIconUrl;
+                groupIcon.alt = `${groupData.name} Icon`;
+                groupIcon.style.width = '50px';
+                groupIcon.style.height = '50px';
+                groupIcon.style.borderRadius = '12px';
+
+                groupInfoDiv.appendChild(groupIcon);
+                groupInfoDiv2.appendChild(groupName);
+                groupInfoDiv3.appendChild(groupMembers);
+                groupInfoDiv3.appendChild(groupRole);
+                groupInfoDiv3.appendChild(groupVisits);
+
+                groupInfoDiv2.appendChild(groupInfoDiv3);
+                groupInfoDiv.appendChild(groupInfoDiv2)
 
                 textDiv.appendChild(displayName);
                 textDiv.appendChild(userName);
 
                 accountDiv.appendChild(img);
                 accountDiv.appendChild(textDiv);
+                accountDiv.appendChild(groupInfoDiv);
 
                 accountDiv.addEventListener('click', () => {
                     window.location.href = `https://www.roblox.com/users/${userId}/profile`;
@@ -91,6 +231,7 @@
                 container.appendChild(accountDiv);
             }
         }
+
         displayRobloxAccounts();
     </script>
 </body>
