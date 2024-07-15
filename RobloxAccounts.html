@@ -160,6 +160,8 @@
 
                 const accountDiv = document.createElement('div');
                 accountDiv.classList.add('roblox-account');
+                accountDiv.setAttribute('href', `https://www.roblox.com/users/${userId}/profile`);
+                accountDiv.setAttribute('target', "_blank");
 
                 const img = document.createElement('img');
                 img.src = userThumbnail;
@@ -224,9 +226,9 @@
                 accountDiv.appendChild(textDiv);
                 accountDiv.appendChild(groupInfoDiv);
 
-                accountDiv.addEventListener('click', () => {
-                    window.location.href = `https://www.roblox.com/users/${userId}/profile`;
-                });
+                //accountDiv.addEventListener('click', () => {
+                //    window.location.href = `https://www.roblox.com/users/${userId}/profile`;
+                //});                
 
                 container.appendChild(accountDiv);
             }
