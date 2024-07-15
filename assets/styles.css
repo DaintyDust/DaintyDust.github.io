@@ -9,6 +9,23 @@ body {
     overflow-x: hidden; /* Prevent horizontal scrollbar */
 }
 
+ ::-webkit-scrollbar {
+        width: 8px
+        }
+
+        ::-webkit-scrollbar-track {
+        background: #0f0f0f;
+        }
+
+        ::-webkit-scrollbar-thumb {
+        background: #5c5c5c;;
+        border-radius: 18px
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+        background: #a7a7a741
+        }
+
 .header {
     background-color: #0f0f0f;
     padding: 1rem 0;
