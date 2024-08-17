@@ -12,9 +12,9 @@ const redirects = {
     "/twitch": "https://www.twitch.tv/daintydust",
 };
 
-const path = window.location.pathname;
-console.log(path)
-console.log(redirects[path])
+const path = window.location.pathname.toLowerCase();
+console.log(path);
+console.log(redirects[path]);
 if (redirects[path]) {
     window.location.href = redirects[path];
 }
