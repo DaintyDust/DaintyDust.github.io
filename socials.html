@@ -20,7 +20,7 @@
         }
 
         .social-header {
-            width: 25%;
+            width: 20%;
             height: 150px;
             margin: auto;
         }
@@ -33,7 +33,6 @@
             margin-right: 10px;
             background: #222527;
         }
-
         .social .social-info,
         .social-header .social-info,
         .social-header .social-info-header {
@@ -98,6 +97,17 @@
             min-width: 1400px;
             min-height: 600px;
         }
+
+        .padding {
+            padding: 10px;
+            width: 45px !important;
+            height: 45px !important;
+        }
+        .smallpadding {
+            padding: 5px;
+            width: 55px !important;
+            height: 55px !important;
+        }
     </style>
 </head>
 
@@ -116,7 +126,7 @@
             <div class="social-header">
                 <!-- <img src="https://tr.rbxcdn.com/30DAY-AvatarHeadshot-5B0CB485F320C85E1CF14E7FA0EAC343-Png/150/150/AvatarHeadshot/Png/isCircular" alt="NickV535's Profile Picture" /> -->
                 <div class="social-info-header">
-                    <img src="https://tr.rbxcdn.com/180DAY-7fb6cc401fa0aecc0719baa1b7114891/150/150/Image/Png/noFilter"
+                    <img src="assets/images/Profile.png" alt="Profile Picture"
                     style="width: 100px; height: 100px; border-radius: 12px" />
                     <!-- <div style="display: flex; flex-direction: column">
                         <span style="text-align: left; margin-bottom: 10px"></span>
@@ -125,9 +135,10 @@
                 </div>
                 <div style="display: flex; flex-direction: column; margin: auto;">
                     <span style="font-size: 28px; margin-bottom: 12px">Nick</span>
-                    <div style="display: flex;">
-                        <span style="text-align: left">@DaintyDust05191</span>
+                    <div style="display: flex; flex-direction: column; align-items: center;">
+                        <!-- <span style="text-align: left">@DaintyDust05191</span> -->
                         <span style="text-align: left">@DaintyDust</span>
+                        <!-- <span style="text-align: left">@NickV535</span> -->
                     </div>
                 </div>
             </div>
@@ -135,43 +146,49 @@
             <div id="AccountsMainFrame" class="game-container">
                 <div>
                     <div class="social" onclick="window.location.href='https://daintydust.github.io/Youtube'" style="cursor: pointer;">
-                        <img src="assets/images/Youtube Logo.png" alt="Youtube" />
+                        <img src="assets/images/Youtube LogoV2.png" class="padding" alt="Youtube" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">DaintyDust</span>
                             <span style="text-align: left">@DaintyDust</span>
                         </div>
+                        <img src="assets/images/Profile.png" alt="Roblox Group" style="margin-left: auto;" />
                     </div>
                     <div class="social" onclick="window.location.href='https://daintydust.github.io/Twitter'" style="cursor: pointer;">
-                        <img src="assets/images/Twitter Logo.png" alt="Twitter" />
+                        <img src="assets/images/Twitter Logo.png" class="padding" alt="Twitter" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">NickV535</span>
                             <span style="text-align: left">@NickV535</span>
                         </div>
+                        <img src="assets/images/Profile.png" alt="Roblox Group" style="margin-left: auto;" />
                     </div>
                     <div class="social" onclick="window.location.href='https://github.com/DaintyDust'" style="cursor: pointer;">
                         <img src="assets/images/Github Logo.png" alt="Github" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">DaintyDust</span>
                         </div>
+                        <img src="assets/images/Profile.png" alt="Roblox Group" style="margin-left: auto;" />
                     </div>
                     <div class="social" onclick="navigator.clipboard.writeText('DaintyDust')" style="cursor: pointer;">
-                        <img src="assets/images/Discord Logo.png" alt="Discord username" />
+                        <img src="assets/images/Discord Logo.png" class="smallpadding" alt="Discord username" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">DaintyDust</span>
                         </div>
+                        <img src="assets/images/Profile.png" alt="Roblox Group" style="margin-left: auto;" />
                     </div>
-                    <div class="social" onclick="window.location.href='https://www.roblox.com/users/544088422/profile'" style="cursor: pointer;">
-                        <img class="roblox-profile-image" robloxid="544088422" alt="Roblox" />
+                    <div class="social" onclick="window.location.href='https://daintydust.github.io/roblox'" style="cursor: pointer;">
+                        <img src="assets/images/Roblox Logo.png" class="padding" alt="Roblox" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">NickV535</span>
                             <span style="text-align: left">@DaintyDust05191</span>
                         </div>
+                        <img class="roblox-profile-image" robloxid="544088422" alt="Roblox" style="margin-left: auto;" />
                     </div>
-                    <div class="social" onclick="window.location.href='https://www.roblox.com/groups/8193767/Nick-Studios#!/about'" style="cursor: pointer;">
-                        <img src="assets/images/Nick Studios Logo.png" alt="Roblox Group" />
+                    <div class="social" onclick="window.location.href='https://daintydust.github.io/group'" style="cursor: pointer;">
+                        <img src="assets/images/Roblox Logo.png" class="padding" alt="Roblox Group" />
                         <div style="display: flex; flex-direction: column">
                             <span style="font-size: 28px; margin-bottom: 3px">Nick Studio's</span>
                         </div>
+                        <img src="assets/images/Nick Studios Logo.png" alt="Roblox Group" style="margin-left: auto;" />
                     </div>
                 </div>
             </div>
