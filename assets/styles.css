@@ -1,5 +1,7 @@
 /* styles.css */
 
+
+
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
@@ -76,12 +78,14 @@ h1:active, h2:active {
 
 .header-description {
     font-size: 1rem;
+    white-space: nowrap; /* Prevent text from wrapping to the next line */
 }
 
 .social-icons {
     display: flex;
     align-items: center;
     margin-right: 20px; /* Adjust spacing between social icons */
+    gap: 10px;
 }
 
 .social-icon:hover {
@@ -91,11 +95,12 @@ h1:active, h2:active {
 }
 
 .social-icon {
-    width: 30px; /* Adjust size of social icons */
-    height: auto;
-    margin-left: 10px; /* Adjust spacing between social icons */
+    width: 100%; /* Adjust size of social icons */
+    height: 100%;
+    max-width: 30px;
+    /* margin-left: 10px; */ /* Adjust spacing between social icons */
     cursor: pointer;
-    transition: all 0.20s; 
+    transition: all 0.20s;
 }
 
 .section {
@@ -176,4 +181,57 @@ h1:active, h2:active {
     margin: 0 0 10px 0;
     font-size: 1.5rem;
     color: #ff0000;
+}
+@media (max-width: 600px) {
+    .header-description, .nick-studios-logo {
+        display: none !important;
+    }
+    .header-title {
+        margin-left: 15px !important;
+    }
+    .social-icons a {
+        width: 13% !important;
+    }
+
+    .social-icons img:not(a img) {
+        width: 10% !important;
+    }
+
+    #AccountsMainFrame {
+        min-width: 0 !important;
+        min-height: 0 !important;
+    }
+
+    .social-header, #AccountsMainFrame {
+        width: 75% !important;
+    }
+
+    .social {
+        height: auto !important;
+        padding: 15px !important;
+    }
+
+    .social img {
+        width: 48px !important;
+        height: 48px !important;
+    }
+
+    img.padding {
+        width: 28px !important;
+        height: 28px !important;
+    }
+
+    .social div {
+        & :first-child {
+            font-size: 21px !important;
+        }
+        & :last-child {
+            font-size: 13px !important;
+        }
+    }
+    .social img:last-child{
+        position: relative;
+        right: 0;
+    }
+
 }
