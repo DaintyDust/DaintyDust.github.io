@@ -9,6 +9,7 @@ const redirects = {
     "/x": "https://twitter.com/NickV535",
     "/github": "https://github.com/DaintyDust",
     "/group": "https://www.roblox.com/groups/8193767/Nick-Studios#!/about",
+    "/nick-studios": "https://www.roblox.com/groups/8193767/Nick-Studios#!/about",
     "/twitch": "https://www.twitch.tv/daintydust",
 };
 
