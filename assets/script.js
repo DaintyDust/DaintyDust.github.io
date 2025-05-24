@@ -17,21 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGameRunning = false;
     let canChangeDirection = true;
 
-    // Discord profile copy
-    const discordIcon = document.getElementById('discord-icon');
-    discordIcon.addEventListener('click', () => {
-        const discordUsername = 'DaintyDust'; 
-        const message = `Copied Discord username "${discordUsername}" to clipboard`;
-        navigator.clipboard.writeText(discordUsername)
-            .then(() => {
-                console.log(message);
-                alert(message);
-            })
-            .catch(err => {
-                console.error('Failed to copy:', err);
-            });
-    });
-
     // Snake game
     startButton.addEventListener('click', startGame);
     respawnButton.addEventListener('click', startGame);
