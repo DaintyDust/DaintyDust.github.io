@@ -46,5 +46,5 @@ function detectMobV2() {
 }
 console.log(window.mobileCheck(), isMobile, detectMob(), detectMobV2());
 if ((path === "" || path === "/" || path === "/index" || path === "/snake") && (window.mobileCheck() || isMobile || detectMob() || detectMobV2())) {
-    window.location.href = "https://daintydust.github.io/socials";
+    window.location.href = "/socials";
 }
