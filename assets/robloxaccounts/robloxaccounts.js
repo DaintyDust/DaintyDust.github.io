@@ -336,9 +336,9 @@ async function displayRobloxAccounts() {
                 loadedCount++;
                 updateProgress(loadedCount, robloxUserIDs.length);
 
-                if (i < robloxUserIDs.length - 1) {
-                    await sleep(750);
-                }
+                // if (i < robloxUserIDs.length - 1) {
+                //     await sleep(750);
+                // }
 
             } catch (error) {
                 console.error(`Error loading data for user ${userId}:`, error);
