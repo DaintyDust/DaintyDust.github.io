@@ -14,10 +14,9 @@
   width: 95%;
   max-height: 80vh;
   overflow-y: auto;
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .page-content::after {
@@ -55,10 +54,9 @@
   padding: 15px;
   z-index: 1000;
   max-width: 350px;
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .group-widget-window::after {
@@ -84,7 +82,7 @@
 
 .group-widget {
   background: #13191f;
-  border: 2px solid #00594f;
+  border: 2px solid #0081a7;
   padding: 20px;
   border-radius: 0;
   transition: all 0.2s ease;
@@ -94,10 +92,7 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
-  box-shadow: 0 0 10px rgba(0, 89, 79, 0.3);
+  box-shadow: 0 0 10px rgba(0, 129, 167, 0.3);
 }
 
 .group-widget::before {
@@ -107,7 +102,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 89, 79, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 129, 167, 0.2), transparent);
   transition: left 0.5s ease;
 }
 
@@ -117,19 +112,16 @@
 
 .group-widget:hover {
   border-color: #ffffff;
-  box-shadow: 0 0 20px rgba(0, 89, 79, 0.6);
+  box-shadow: 0 0 20px rgba(0, 129, 167, 0.6);
   transform: translateX(3px);
 }
 
 .group-widget > img {
   width: 70px;
   height: 70px;
-  border: 2px solid #00594f;
+  border: 2px solid #0081a7;
   border-radius: 0;
   flex-shrink: 0;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   filter: brightness(1.1);
   transition: all 0.2s ease;
 }
@@ -156,11 +148,11 @@
 }
 
 .group-widget-info > span:not(.group-name) {
-  color: #00594f;
+  color: #0081a7;
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.5px;
-  text-shadow: 0 0 5px rgba(0, 89, 79, 0.5);
+  text-shadow: 0 0 5px rgba(0, 129, 167, 0.5);
 }
 
 .group-widget:hover .group-widget-info > span:not(.group-name) {
@@ -179,9 +171,6 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
 }
 
 .roblox-account::before {
@@ -200,9 +189,9 @@
 }
 
 .roblox-account:hover {
-  background: #00594f;
+  background: #0081a7;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.5);
   transform: translateX(3px);
 }
 
@@ -212,9 +201,6 @@
   border: 2px solid #ffffff33;
   border-radius: 0;
   flex-shrink: 0;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   filter: brightness(1.1);
   transition: all 0.2s ease;
 }

@@ -2,14 +2,13 @@
 const STEP_LENGTH = 1;
 const CELL_SIZE = 10;
 const BORDER_WIDTH = 2;
-const MAX_ELECTRONS = 150;
+const MAX_ELECTRONS = 500;
 const CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
 const CELL_REPAINT_INTERVAL = [300, 500];
 const BG_COLOR = "#1d2227";
-const BORDER_COLOR = "#13191f";
-const CELL_HIGHLIGHT = "#ffffff";
-const ELECTRON_COLOR = "#ffffff";
-const DPR = window.devicePixelRatio || 1;
+const BORDER_COLOR = "#0d1a2e"; // "#13191f";
+const CELL_HIGHLIGHT = "#00b4d8";
+const ELECTRON_COLOR = "#0096c7";
 const ACTIVE_ELECTRONS = [];
 const PINNED_CELLS = [];
 const MOVE_TRAILS = [
@@ -45,6 +44,7 @@ class FullscreenCanvas {
     adjust() {
         const { canvas, context, disableScale } = this;
         const { innerWidth, innerHeight } = window;
+        const DPR = window.devicePixelRatio || 1;
 
         this.width = innerWidth;
         this.height = innerHeight;
@@ -72,8 +72,11 @@ class FullscreenCanvas {
     blendBackground(background, opacity = 0.05) {
         return this.paint((ctx, { realWidth, realHeight, width, height }) => {
             ctx.globalCompositeOperation = "source-over";
-            ctx.globalAlpha = opacity;
+            // ctx.globalAlpha = opacity;
+            ctx.fillStyle = `rgba(0,0,0,0.05)`;  //`rgba(29, 34, 39, 0.05)`;
+            ctx.fillRect(0, 0, width, height);
 
+            ctx.globalCompositeOperation = "lighten";
             ctx.drawImage(background, 0, 0, realWidth, realHeight, 0, 0, width, height);
         });
     }
@@ -127,7 +130,7 @@ class FullscreenCanvas {
 }
 
 class Electron {
-    constructor(x = 0, y = 0, { lifeTime = 3 * 1e3, speed = STEP_LENGTH, color = ELECTRON_COLOR } = {}) {
+    constructor(x = 0, y = 0, { lifeTime = 3000, speed = STEP_LENGTH, color = ELECTRON_COLOR } = {}) {
         this.lifeTime = lifeTime;
         this.expireAt = Date.now() + lifeTime;
 
@@ -265,11 +268,9 @@ class Cell {
 
     createElectrons() {
         const { startX, startY, electronCount, electronOptions, forceElectrons } = this;
-
         if (!electronCount) return;
 
         const endpoints = [...END_POINTS_OFFSET];
-
         const max = forceElectrons ? electronCount : Math.min(electronCount, MAX_ELECTRONS - ACTIVE_ELECTRONS.length);
 
         for (let i = 0; i < max; i++) {
@@ -282,6 +283,21 @@ class Cell {
 
 const bgLayer = new FullscreenCanvas();
 const mainLayer = new FullscreenCanvas();
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+        const context = this,
+            args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
 
 function createRandomCell(options = {}) {
     if (ACTIVE_ELECTRONS.length >= MAX_ELECTRONS) return;
@@ -291,6 +307,40 @@ function createRandomCell(options = {}) {
     const cell = new Cell(Math.floor(Math.random() * (height / CELL_DISTANCE + 1)), Math.floor(Math.random() * (width / CELL_DISTANCE + 1)), options);
 
     cell.paintNextTo(mainLayer);
+}
+
+function iterateItemsIn(list) {
+    const now = Date.now();
+
+    for (let i = 0, max = list.length; i < max; i++) {
+        const item = list[i];
+
+        if (now >= item.expireAt) {
+            list.splice(i, 1);
+            i--;
+            max--;
+        } else {
+            item.paintNextTo(mainLayer);
+        }
+    }
+}
+
+let nextRandomAt;
+
+function activateRandom() {
+    const now = Date.now();
+
+    if (now < nextRandomAt) {
+        return;
+    }
+
+    nextRandomAt = now + 300 + Math.floor(Math.random() * (400 - 100 + 1));
+    createRandomCell();
+}
+
+function drawItems() {
+    iterateItemsIn(PINNED_CELLS);
+    iterateItemsIn(ACTIVE_ELECTRONS);
 }
 
 function drawGrid() {
@@ -310,40 +360,6 @@ function drawGrid() {
     });
 }
 
-function iterateItemsIn(list) {
-    const now = Date.now();
-
-    for (let i = 0, max = list.length; i < max; i++) {
-        const item = list[i];
-
-        if (now >= item.expireAt) {
-            list.splice(i, 1);
-            i--;
-            max--;
-        } else {
-            item.paintNextTo(mainLayer);
-        }
-    }
-}
-
-function drawItems() {
-    iterateItemsIn(PINNED_CELLS);
-    iterateItemsIn(ACTIVE_ELECTRONS);
-}
-
-let nextRandomAt;
-
-function activateRandom() {
-    const now = Date.now();
-
-    if (now < nextRandomAt) {
-        return;
-    }
-
-    nextRandomAt = now + 300 + Math.floor(Math.random() * (1000 - 300 + 1));
-
-    createRandomCell();
-}
 
 function prepaint() {
     drawGrid();
@@ -365,28 +381,16 @@ function render() {
     requestAnimationFrame(render);
 }
 
-function debounce(func, wait, immediate) {
-    let timeout;
-    return function () {
-        const context = this,
-            args = arguments;
-        const later = function () {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
+function init() {
+    bgLayer.onResize(drawGrid);
+    mainLayer.onResize(prepaint);
+    mainLayer.renderIntoView(document.body);
+    prepaint();
+    render();
 }
 
-// Initialize background animation
-bgLayer.onResize(drawGrid);
-mainLayer.onResize(prepaint);
-mainLayer.renderIntoView(document.body);
-prepaint();
-render();
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+});
 
-// Prevent zooming
 document.addEventListener("touchmove", (e) => e.preventDefault());

@@ -27,10 +27,9 @@ body {
   max-width: 500px;
   width: 90%;
   text-align: center;
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .page-content::after {
@@ -49,8 +48,8 @@ body {
 .error-code {
   font-size: 72px;
   font-weight: bold;
-  color: #00594f;
-  text-shadow: 0 0 20px rgba(0, 89, 79, 0.5);
+  color: #0081a7;
+  text-shadow: 0 0 20px rgba(0, 129, 167, 0.5);
   letter-spacing: 4px;
   margin: 0 0 20px 0;
   position: relative;
@@ -61,16 +60,25 @@ body {
 @keyframes glitch {
   0%,
   100% {
-    text-shadow: 0 0 20px rgba(0, 89, 79, 0.5);
+    text-shadow: 0 0 20px rgba(0, 129, 167, 0.5);
   }
   25% {
-    text-shadow: -2px 0 #ff0000, 2px 0 #00ff00, 0 0 20px rgba(0, 89, 79, 0.5);
+    text-shadow:
+      -2px 0 #ff0000,
+      2px 0 #00ff00,
+      0 0 20px rgba(0, 129, 167, 0.5);
   }
   50% {
-    text-shadow: 2px 0 #ff0000, -2px 0 #00ff00, 0 0 20px rgba(0, 89, 79, 0.5);
+    text-shadow:
+      2px 0 #ff0000,
+      -2px 0 #00ff00,
+      0 0 20px rgba(0, 129, 167, 0.5);
   }
   75% {
-    text-shadow: -2px 0 #0000ff, 2px 0 #ff00ff, 0 0 20px rgba(0, 89, 79, 0.5);
+    text-shadow:
+      -2px 0 #0000ff,
+      2px 0 #ff00ff,
+      0 0 20px rgba(0, 129, 167, 0.5);
   }
 }
 
@@ -139,10 +147,10 @@ body {
 }
 
 .back-button:hover {
-  background: #00594f;
+  background: #0081a7;
   color: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.5);
   transform: translateX(3px);
 }
 

@@ -26,10 +26,9 @@ body {
   z-index: 1000;
   max-width: 400px;
   width: 90%;
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .page-content::after {
@@ -96,10 +95,10 @@ body {
 }
 
 .linktree-link:hover {
-  background: #00594f;
+  background: #0081a7;
   color: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.5);
   transform: translateX(3px);
 }
 
@@ -107,9 +106,6 @@ body {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   filter: brightness(1.2);
   object-fit: contain;
   transition: filter 0.2s ease;
@@ -149,10 +145,9 @@ body {
   max-width: 300px;
   width: 90%;
   position: relative;
-  box-shadow: 0 0 0 1px #13191f, 0 0 30px rgba(255, 255, 255, 0.2);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 30px rgba(255, 255, 255, 0.2);
 }
 
 .discord-popup-content::after {
@@ -179,7 +174,7 @@ body {
 
 .discord-username {
   font-size: 18px;
-  color: #00594f;
+  color: #0081a7;
   font-weight: bold;
   margin: 15px 0;
   padding: 10px;

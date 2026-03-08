@@ -23,11 +23,12 @@ body {
   font-family: "Helvetica", Arial, sans-serif;
   color: #ffffff;
   z-index: 1000;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  transition:
+    width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
   user-select: none;
 }
 
@@ -37,7 +38,10 @@ body {
   padding-top: 0;
   padding-bottom: 0;
   overflow: hidden;
-  transition: opacity 0.3s ease, max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.3s ease;
 }
 
 .social-widget.collapsed {
@@ -48,7 +52,10 @@ body {
 .social-widget-content {
   opacity: 1;
   max-height: 500px;
-  transition: opacity 0.3s ease 0.1s, max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  transition:
+    opacity 0.3s ease 0.1s,
+    max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    padding 0.3s ease;
 }
 
 .social-widget-header {
@@ -139,10 +146,10 @@ body {
 }
 
 .social-link:hover {
-  background: #00594f;
+  background: #0081a7;
   color: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.5);
   transform: translateX(3px);
 }
 
@@ -150,9 +157,6 @@ body {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   filter: brightness(1.2);
   object-fit: contain;
   transition: filter 0.2s ease;

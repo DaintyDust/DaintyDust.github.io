@@ -8,12 +8,11 @@ const MAX_ELECTRONS = 150;
 const CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
 const CELL_REPAINT_INTERVAL = [300, 500];
 const BG_COLOR = "#1d2227";
-const BORDER_COLOR = "#13191f";
-const CELL_HIGHLIGHT = "#ffffff";
-const ELECTRON_COLOR = "#ffffff";
-const FONT_COLOR = "#00594f";
-const FONT_FAMILY = "Helvetica, Arial, sans-serif";
-const DPR = window.devicePixelRatio || 1;
+const BORDER_COLOR = "#0d1a2e"; // "#13191f";
+const CELL_HIGHLIGHT = "#00b4d8"; // "#ffffff";
+const ELECTRON_COLOR = "#0096c7"; // "#ffffff";
+const FONT_COLOR = "#0081a7"; // "#00594f";
+const FONT_FAMILY = 'Inter, "Helvetica", Arial, sans-serif';
 const ACTIVE_ELECTRONS = [];
 const PINNED_CELLS = [];
 const MOVE_TRAILS = [
@@ -49,6 +48,7 @@ class FullscreenCanvas {
     adjust() {
         const { canvas, context, disableScale } = this;
         const { innerWidth, innerHeight } = window;
+        const DPR = window.devicePixelRatio || 1;
 
         this.width = innerWidth;
         this.height = innerHeight;
@@ -76,8 +76,11 @@ class FullscreenCanvas {
     blendBackground(background, opacity = 0.05) {
         return this.paint((ctx, { realWidth, realHeight, width, height }) => {
             ctx.globalCompositeOperation = "source-over";
-            ctx.globalAlpha = opacity;
+            // ctx.globalAlpha = opacity;
+            ctx.fillStyle = `rgba(0,0,0,0.05)`;  //`rgba(29, 34, 39, 0.05)`;
+            ctx.fillRect(0, 0, width, height);
 
+            ctx.globalCompositeOperation = "lighten";
             ctx.drawImage(background, 0, 0, realWidth, realHeight, 0, 0, width, height);
         });
     }
@@ -131,7 +134,7 @@ class FullscreenCanvas {
 }
 
 class Electron {
-    constructor(x = 0, y = 0, { lifeTime = 3 * 1e3, speed = STEP_LENGTH, color = ELECTRON_COLOR } = {}) {
+    constructor(x = 0, y = 0, { lifeTime = 3000, speed = STEP_LENGTH, color = ELECTRON_COLOR } = {}) {
         this.lifeTime = lifeTime;
         this.expireAt = Date.now() + lifeTime;
 
@@ -269,11 +272,9 @@ class Cell {
 
     createElectrons() {
         const { startX, startY, electronCount, electronOptions, forceElectrons } = this;
-
         if (!electronCount) return;
 
         const endpoints = [...END_POINTS_OFFSET];
-
         const max = forceElectrons ? electronCount : Math.min(electronCount, MAX_ELECTRONS - ACTIVE_ELECTRONS.length);
 
         for (let i = 0; i < max; i++) {
@@ -288,138 +289,8 @@ const bgLayer = new FullscreenCanvas();
 const mainLayer = new FullscreenCanvas();
 const shapeLayer = new FullscreenCanvas(true);
 
-function stripOld(limit = 1000) {
-    const now = Date.now();
-
-    for (let i = 0, max = ACTIVE_ELECTRONS.length; i < max; i++) {
-        const e = ACTIVE_ELECTRONS[i];
-
-        if (e.expireAt - now < limit) {
-            ACTIVE_ELECTRONS.splice(i, 1);
-
-            i--;
-            max--;
-        }
-    }
-}
-
-function createRandomCell(options = {}) {
-    if (ACTIVE_ELECTRONS.length >= MAX_ELECTRONS) return;
-
-    const { width, height } = mainLayer;
-
-    const cell = new Cell(Math.floor(Math.random() * (height / CELL_DISTANCE + 1)), Math.floor(Math.random() * (width / CELL_DISTANCE + 1)), options);
-
-    cell.paintNextTo(mainLayer);
-}
-
-function drawGrid() {
-    bgLayer.paint((ctx, { width, height }) => {
-        ctx.fillStyle = BG_COLOR;
-        ctx.fillRect(0, 0, width, height);
-
-        ctx.fillStyle = BORDER_COLOR;
-
-        // horizontal lines
-        for (let h = CELL_SIZE; h < height; h += CELL_DISTANCE) {
-            ctx.fillRect(0, h, width, BORDER_WIDTH);
-        }
-
-        // vertical lines
-        for (let w = CELL_SIZE; w < width; w += CELL_DISTANCE) {
-            ctx.fillRect(w, 0, BORDER_WIDTH, height);
-        }
-    });
-}
-
-function iterateItemsIn(list) {
-    const now = Date.now();
-
-    for (let i = 0, max = list.length; i < max; i++) {
-        const item = list[i];
-
-        if (now >= item.expireAt) {
-            list.splice(i, 1);
-            i--;
-            max--;
-        } else {
-            item.paintNextTo(mainLayer);
-        }
-    }
-}
-
-function drawItems() {
-    iterateItemsIn(PINNED_CELLS);
-    iterateItemsIn(ACTIVE_ELECTRONS);
-}
-
-let nextRandomAt;
-
-function activateRandom() {
-    const now = Date.now();
-
-    if (now < nextRandomAt) {
-        return;
-    }
-
-    nextRandomAt = now + 300 + Math.floor(Math.random() * (1000 - 300 + 1));
-
-    createRandomCell();
-}
-
-function prepaint() {
-    drawGrid();
-
-    mainLayer.paint((ctx, { width, height }) => {
-        // composite with rgba(255,255,255,255) to clear trails
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(0, 0, width, height);
-    });
-
-    mainLayer.blendBackground(bgLayer.canvas, 0.9);
-}
-
-function render() {
-    mainLayer.blendBackground(bgLayer.canvas);
-
-    drawItems();
-    activateRandom();
-
-    shape.renderID = requestAnimationFrame(render);
-}
-
-function shuffle(array) {
-    let clone = array.slice(0),
-        pos,
-        temp;
-    for (let i = 0; i < clone.length; i++) {
-        pos = Math.floor(Math.random() * clone.length);
-        temp = clone[i];
-        clone[i] = clone[pos];
-        clone[pos] = temp;
-    }
-    return clone;
-}
-
-function debounce(func, wait, immediate) {
-    let timeout;
-    return function () {
-        const context = this,
-            args = arguments;
-        const later = function () {
-            timeout = null;
-            if (!immediate) func.apply(context, args);
-        };
-        const callNow = immediate && !timeout;
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-        if (callNow) func.apply(context, args);
-    };
-}
-
 const shape = {
     lastText: "",
-    lastMatrix: null,
     renderID: undefined,
     isAlive: false,
 
@@ -439,14 +310,6 @@ const shape = {
         };
     },
 
-    get explodeOptions() {
-        return Object.assign(this.cellOptions, {
-            electronOptions: Object.assign(this.electronOptions, {
-                lifeTime: 500 + Math.floor(Math.random() * (1500 - 500 + 1)),
-            }),
-        });
-    },
-
     init(container = document.body) {
         if (this.isAlive) {
             return;
@@ -456,6 +319,8 @@ const shape = {
         mainLayer.onResize(prepaint);
 
         mainLayer.renderIntoView(container);
+        // bgLayer.renderIntoView(container);
+        // shapeLayer.renderIntoView(container);
 
         shapeLayer.onResize(() => {
             if (this.lastText) {
@@ -470,15 +335,8 @@ const shape = {
     },
 
     clear() {
-        const { lastMatrix } = this;
-
         this.lastText = "";
-        this.lastMatrix = null;
         PINNED_CELLS.length = 0;
-
-        if (lastMatrix) {
-            this.explode(lastMatrix);
-        }
     },
 
     getTextMatrix(text, { fontWeight = "bold", fontFamily = FONT_FAMILY } = {}) {
@@ -514,23 +372,10 @@ const shape = {
     },
 
     print(text, options) {
-        const isBlank = !!this.lastText;
-
         this.clear();
-
-        if (text !== 0 && !text) {
-            if (isBlank) {
-                this.spiral({ reverse: true, lifeTime: 500, electronCount: 2 });
-            }
-
-            return;
-        }
-
-        this.spiral();
-
         this.lastText = text;
 
-        const matrix = (this.lastMatrix = shuffle(this.getTextMatrix(text, options)));
+        const matrix = shuffle(this.getTextMatrix(text, options));
 
         matrix.forEach(([i, j]) => {
             const cell = new Cell(i, j, this.cellOptions);
@@ -539,92 +384,153 @@ const shape = {
             cell.pin();
         });
     },
-
-    spiral({ radius, increment = 0, reverse = false, lifeTime = 250, electronCount = 1, forceElectrons = true } = {}) {
-        const { width, height } = mainLayer;
-        const cols = Math.floor(width / CELL_DISTANCE);
-        const rows = Math.floor(height / CELL_DISTANCE);
-        const ox = Math.floor(cols / 2);
-        const oy = Math.floor(rows / 2);
-
-        let cnt = 1;
-        let deg = Math.floor(Math.random() * (360 + 1));
-        let r = radius === undefined ? Math.floor(Math.min(cols, rows) / 3) : radius;
-
-        const step = reverse ? 15 : -15;
-        const max = Math.abs(360 / step);
-
-        while (cnt <= max) {
-            const i = oy + Math.floor(r * Math.sin((deg / 180) * Math.PI));
-            const j = ox + Math.floor(r * Math.cos((deg / 180) * Math.PI));
-
-            const cell = new Cell(i, j, {
-                electronCount,
-                forceElectrons,
-                background: CELL_HIGHLIGHT,
-                electronOptions: { lifeTime, speed: 3, color: CELL_HIGHLIGHT },
-            });
-
-            cell.delay(cnt * 16);
-
-            cnt++;
-            deg += step;
-            r += increment;
-        }
-    },
-
-    explode(matrix) {
-        stripOld();
-
-        if (matrix) {
-            const { length } = matrix;
-            const max = Math.min(50, Math.floor(length / 20) + Math.floor(Math.random() * (Math.floor(length / 10) - Math.floor(length / 20) + 1)));
-
-            for (let idx = 0; idx < max; idx++) {
-                const [i, j] = matrix[idx];
-                const cell = new Cell(i, j, this.explodeOptions);
-
-                cell.paintNextTo(mainLayer);
-            }
-        } else {
-            const max = 10 + Math.floor(Math.random() * (20 - 10 + 1));
-
-            for (let idx = 0; idx < max; idx++) {
-                createRandomCell(this.explodeOptions);
-            }
-        }
-    },
 };
+
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function () {
+        const context = this,
+            args = arguments;
+        const later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        const callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+}
+
+function shuffle(array) {
+    let clone = array.slice(0),
+        pos,
+        temp;
+    for (let i = 0; i < clone.length; i++) {
+        pos = Math.floor(Math.random() * clone.length);
+        temp = clone[i];
+        clone[i] = clone[pos];
+        clone[pos] = temp;
+    }
+    return clone;
+}
+
+function createRandomCell(options = {}) {
+    if (ACTIVE_ELECTRONS.length >= MAX_ELECTRONS) return;
+
+    const { width, height } = mainLayer;
+
+    const cell = new Cell(Math.floor(Math.random() * (height / CELL_DISTANCE + 1)), Math.floor(Math.random() * (width / CELL_DISTANCE + 1)), options);
+
+    cell.paintNextTo(mainLayer);
+}
+
+function iterateItemsIn(list) {
+    const now = Date.now();
+
+    for (let i = 0, max = list.length; i < max; i++) {
+        const item = list[i];
+
+        if (now >= item.expireAt) {
+            list.splice(i, 1);
+            i--;
+            max--;
+        } else {
+            item.paintNextTo(mainLayer);
+        }
+    }
+}
+
+let nextRandomAt;
+
+function activateRandom() {
+    const now = Date.now();
+
+    if (now < nextRandomAt) {
+        return;
+    }
+
+    nextRandomAt = now + 300 + Math.floor(Math.random() * (1000 - 300 + 1));
+    createRandomCell();
+}
+
+function drawItems() {
+    iterateItemsIn(PINNED_CELLS);
+    iterateItemsIn(ACTIVE_ELECTRONS);
+}
+
+function drawGrid() {
+    bgLayer.paint((ctx, { width, height }) => {
+        ctx.fillStyle = BG_COLOR;
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.fillStyle = BORDER_COLOR;
+
+        for (let h = CELL_SIZE; h < height; h += CELL_DISTANCE) {
+            ctx.fillRect(0, h, width, BORDER_WIDTH);
+        }
+
+        for (let w = CELL_SIZE; w < width; w += CELL_DISTANCE) {
+            ctx.fillRect(w, 0, BORDER_WIDTH, height);
+        }
+    });
+}
+
+
+function prepaint() {
+    drawGrid();
+
+    mainLayer.paint((ctx, { width, height }) => {
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, width, height);
+    });
+
+    mainLayer.blendBackground(bgLayer.canvas/*, 0.9*/);
+}
+
+function render() {
+    mainLayer.blendBackground(bgLayer.canvas);
+
+    drawItems();
+    activateRandom();
+    shape.renderID = requestAnimationFrame(render);
+}
 
 function getUrlParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
 }
 
-function updateUrlWithText(text) {
-    const url = new URL(window.location);
-    url.searchParams.set("text", text);
-    window.history.replaceState(null, "", url);
+async function loadFont() {
+    if (!document.fonts || typeof document.fonts.load !== "function") {
+        return;
+    }
+
+    await document.fonts.load('700 48px "Inter"');
 }
 
-shape.init();
+async function init() {
+    shape.init();
 
-const textParam = getUrlParameter("text");
-const displayText = textParam || "DaintyDust";
+    try {
+        await loadFont();
+    } catch (error) {
+        console.warn("Font loading failed, using fallback font", error);
+    }
 
-if (!textParam) {
-    updateUrlWithText(displayText);
+    const textParam = getUrlParameter("text");
+    const displayText = textParam || "DaintyDust";
+    shape.print(displayText);
 }
-
-shape.print(displayText);
 
 document.addEventListener("touchmove", (e) => e.preventDefault()); // prevent zooming
-
 
 // DRAGGABLE WIDGET
 
 // Social widget functionality
 document.addEventListener('DOMContentLoaded', () => {
+    init();
+
     const widget = document.getElementById('social-widget');
     const toggleBtn = document.getElementById('toggle-widget');
     const discordWidget = document.getElementById('discord-widget');

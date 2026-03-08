@@ -6,10 +6,6 @@ function goBack() {
     }
 }
 
-function goHome() {
-    window.location.href = '/';
-}
-
 function setupDiscordCopy() {
     const discordElements = document.querySelectorAll('#discord-icon, #discord-link, #discord-widget');
 
@@ -34,16 +30,6 @@ function setupDiscordCopy() {
 
 document.addEventListener('DOMContentLoaded', () => {
     setupDiscordCopy();
-
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.style.imageRendering = 'pixelated';
-        img.style.imageRendering = '-moz-crisp-edges';
-        img.style.imageRendering = 'crisp-edges';
-    });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.pixel-button, .game-button, .back-button, .linktree-link');
 
     buttons.forEach(button => {

@@ -1,3 +1,11 @@
+@font-face {
+  font-family: "Inter";
+  src: url("../font/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 * {
   box-sizing: border-box;
   scrollbar-width: thin;
@@ -12,9 +20,6 @@ body {
   color: #ffffff;
   overflow-x: hidden;
   min-height: 100vh;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -32,9 +37,6 @@ body {
 
 .main-canvas {
   display: block;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
 }
 
 ::-webkit-scrollbar {
@@ -56,9 +58,9 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #00594f;
+  background: #0081a7;
   border-color: #ffffff;
-  box-shadow: 0 0 8px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 8px rgba(0, 129, 167, 0.5);
 }
 
 ::-webkit-scrollbar-thumb:active {
@@ -86,7 +88,7 @@ body {
 }
 
 .page-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 89, 79, 0.9);
+  background: rgba(0, 129, 167, 0.9);
   border-color: rgba(255, 255, 255, 0.8);
 }
 
@@ -106,17 +108,16 @@ body {
   letter-spacing: 1px;
   z-index: 1000;
   transition: all 0.2s ease;
-  box-shadow: 0 0 0 1px #13191f, 0 0 10px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 .nav-back:hover {
-  background: #00594f;
+  background: #0081a7;
   color: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.5);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.5);
   transform: translateX(3px);
 }
 
@@ -131,9 +132,6 @@ body {
 
 .pixel-borders {
   border-radius: 0 !important;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
 }
 
 .pixel-grid-overlay::after {

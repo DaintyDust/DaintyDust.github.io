@@ -26,10 +26,9 @@ body {
   z-index: 1000;
   max-width: 800px;
   width: 95%;
-  box-shadow: 0 0 0 1px #13191f, 0 0 20px rgba(255, 255, 255, 0.1);
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 20px rgba(255, 255, 255, 0.1);
 }
 
 .page-content::after {
@@ -67,8 +66,8 @@ body {
 .score {
   font-size: 16px;
   font-weight: bold;
-  color: #00594f;
-  text-shadow: 0 0 10px rgba(0, 89, 79, 0.3);
+  color: #0081a7;
+  text-shadow: 0 0 10px rgba(0, 129, 167, 0.3);
   letter-spacing: 1px;
 }
 
@@ -78,9 +77,6 @@ body {
   width: 100%;
   max-width: 600px;
   height: 400px;
-  image-rendering: pixelated;
-  image-rendering: -moz-crisp-edges;
-  image-rendering: crisp-edges;
   z-index: 2;
 }
 
@@ -113,7 +109,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: #00594f;
+  background: #0081a7;
   transition: left 0.3s ease;
   z-index: -1;
 }
@@ -125,7 +121,7 @@ body {
 .game-button:hover {
   color: #ffffff;
   border-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 89, 79, 0.4);
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.4);
 }
 
 .game-over {
