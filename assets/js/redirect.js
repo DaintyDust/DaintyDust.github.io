@@ -11,11 +11,12 @@ const redirects = {
     "/group": "https://www.roblox.com/groups/8193767/Nick-Studios#!/about",
     "/nick-studios": "https://www.roblox.com/groups/8193767/Nick-Studios#!/about",
     "/twitch": "https://www.twitch.tv/daintydust",
+    "/nl": "https://daintydust.dev/"
 };
 
 const path = window.location.pathname.toLowerCase();
-// console.log(path);
-// console.log(redirects[path]);
+console.log(path);
+console.log(redirects[path]);
 if (redirects[path]) {
     window.location.href = redirects[path];
 }
@@ -44,7 +45,9 @@ function detectMob() {
 function detectMobV2() {
     return ((window.innerWidth <= 800) && (window.innerHeight <= 600));
 }
-// console.log(window.mobileCheck(), isMobile, detectMob(), detectMobV2());
+console.log(window.mobileCheck(), isMobile, detectMob(), detectMobV2());
 if ((path === "" || path === "/" || path === "/index" || path === "/snake") && (window.mobileCheck() || isMobile || detectMob() || detectMobV2())) {
     window.location.href = "/linktree";
 }
+
+
