@@ -5,23 +5,6 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DaintyDust</title>
-    <script>
-      (function () {
-        var query = window.location.search;
-        if (!query.startsWith("?/")) return;
-
-        var decoded = query
-          .slice(2)
-          .split("&")
-          .map(function (segment) {
-            return segment.replace(/~and~/g, "&");
-          })
-          .join("?");
-
-        var targetPath = "/" + decoded;
-        window.history.replaceState(null, "", targetPath + window.location.hash);
-      })();
-    </script>
   </head>
   <body>
     <div id="root"></div>
