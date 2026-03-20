@@ -16,12 +16,12 @@ function NotFound() {
           <Link className="button" to="/" onClick={() => window.history.back()}>
             Go Back
           </Link>
-          <a href="/" className="button">
+          <Link to="/" className="button">
             Home Page
-          </a>
-          <a href="/linktree" className="button">
+          </Link>
+          <Link to="/linktree" className="button">
             View Links
-          </a>
+          </Link>
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import { SocialLink } from "@/features/SocialWidget";
 import type { LocaleContent } from "./index";
+import { Link } from "react-router-dom";
 import YoutubeLogo from "@/assets/Socials/Youtube_Logo.png";
 import TwitterLogo from "@/assets/Socials/Twitter_Logo.png";
 import GithubLogo from "@/assets/Socials/Github_Logo.png";
@@ -21,9 +22,9 @@ export const en: LocaleContent = {
             <SocialLink href="/roblox" src={RobloxLogo} alt="Roblox" />
           </div>
           <div className="widget-footer">
-            <a href="/linktree" className="linktree-btn">
+            <Link to="/linktree" className="linktree-btn">
               View All Links
-            </a>
+            </Link>
           </div>
         </>
       ),

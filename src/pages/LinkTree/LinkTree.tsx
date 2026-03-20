@@ -2,6 +2,7 @@ import "./LinkTree.css";
 import Background from "@/features/Background/Index";
 import Widget, { SocialLink } from "@/features/SocialWidget";
 import Popup from "@/components/Popup";
+import { Link } from "react-router-dom";
 import YoutubeLogo from "@/assets/Socials/Youtube_Logo.png";
 import GithubLogo from "@/assets/Socials/Github_Logo.png";
 import DiscordLogo from "@/assets/Socials/Discord_Logo.png";
@@ -14,9 +15,9 @@ function LinkTree() {
   return (
     <>
       <Background />
-      <a href="/" className="back-button">
+      <Link to="/" className="back-button">
         ← Back
-      </a>
+      </Link>
       <Widget HeaderTitle="Social Links" draggable={false}>
         <div className="social-links">
           <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" />
