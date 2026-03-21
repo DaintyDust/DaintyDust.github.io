@@ -876,6 +876,10 @@ let themeRepaintFrameId: number | undefined;
 let themeNeedsGridRefresh = false;
 let themeNeedsTextRefresh = false;
 
+const preventTouchMove = (event: Event) => {
+  event.preventDefault();
+};
+
 export function setThemeColors({ bgColor, borderColor, cellHighlight, electronColor, fontColor }: ThemeColorOptions) {
   if (bgColor && bgColor !== BG_COLOR) {
     BG_COLOR = bgColor;
@@ -926,10 +930,17 @@ export { timer };
 
 export async function init(text?: string) {
   shape.init();
+  document.addEventListener("touchmove", preventTouchMove, { passive: false });
 
   const textParam = getUrlParameter("text");
   const displayText = textParam || text || "DaintyDust";
   shape.print(displayText);
+}
+
+export function destroy() {
+  clearTimeout(timer);
+  shape.destroy();
+  document.removeEventListener("touchmove", preventTouchMove);
 }
 
 // document.getElementById("input").addEventListener("keypress", ({ keyCode, target }) => {
@@ -971,4 +982,3 @@ export async function init(text?: string) {
 //   }
 // });
 
-document.addEventListener("touchmove", (event) => event.preventDefault(), { passive: false });

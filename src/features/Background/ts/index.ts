@@ -416,6 +416,13 @@ function compactAndPaint(list: Cell[]) {
 }
 
 let nextRandomAt = 0;
+let renderFrameId: number | undefined;
+let unbindPointer: (() => void) | undefined;
+let isInitialized = false;
+
+const preventTouchMove = (event: Event) => {
+  event.preventDefault();
+};
 
 function activateRandom() {
   const now = Date.now();
@@ -552,7 +559,7 @@ function render() {
 
   drawItems();
   activateRandom();
-  requestAnimationFrame(render);
+  renderFrameId = requestAnimationFrame(render);
 }
 
 export function setThemeColors({ bgColor, borderColor, cellHighlight, electronColor }: ThemeColorOptions) {
@@ -590,6 +597,10 @@ export function setThemeColors({ bgColor, borderColor, cellHighlight, electronCo
 }
 
 export async function init() {
+  if (isInitialized) {
+    return;
+  }
+
   bgLayer.onResize(drawGrid);
   mainLayer.onResize(prepaint);
 
@@ -598,7 +609,32 @@ export async function init() {
   prepaint();
   render();
 
-  handlePointer();
+  unbindPointer = handlePointer();
+  document.addEventListener("touchmove", preventTouchMove, { passive: false });
+  isInitialized = true;
 }
 
-document.addEventListener("touchmove", (event) => event.preventDefault(), { passive: false });
+export function destroy() {
+  if (!isInitialized) {
+    return;
+  }
+
+  if (renderFrameId !== undefined) {
+    cancelAnimationFrame(renderFrameId);
+    renderFrameId = undefined;
+  }
+
+  unbindPointer?.();
+  unbindPointer = undefined;
+
+  document.removeEventListener("touchmove", preventTouchMove);
+
+  bgLayer.remove();
+  mainLayer.remove();
+
+  ACTIVE_ELECTRONS.length = 0;
+  PINNED_CELLS.length = 0;
+  themeNeedsGridRefresh = false;
+
+  isInitialized = false;
+}

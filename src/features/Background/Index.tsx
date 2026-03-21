@@ -6,18 +6,34 @@ type BackgroundProps = {
   text?: string;
 };
 
+type BackgroundModule = {
+  init: (text?: string) => void | Promise<void>;
+  destroy?: () => void;
+};
+
 function Background({ Font = false, text }: BackgroundProps) {
   useEffect(() => {
-    if (Font) {
-      void import("./ts/font.ts").then((module) => {
-        module.init(text);
-      });
-      return;
-    }
+    let disposed = false;
+    let activeModule: BackgroundModule | undefined;
 
-    void import("./ts/index.ts").then((module) => {
-      module.init();
-    });
+    const load = async () => {
+      const module: BackgroundModule = Font ? await import("./ts/font.ts") : await import("./ts/index.ts");
+
+      if (disposed) {
+        module.destroy?.();
+        return;
+      }
+
+      activeModule = module;
+      await module.init(text);
+    };
+
+    void load();
+
+    return () => {
+      disposed = true;
+      activeModule?.destroy?.();
+    };
   }, [Font, text]);
 
   return <CommandsWidget DefaultText={text} HasText={Font} />;
