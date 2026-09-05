@@ -14,7 +14,7 @@ export const nl: LocaleContent = {
       content: (
         <>
           <div className="social-links">
-            <SocialLink href="mailto:nick-verbruggen@hotmail.com" src={EmailLogo} alt="Email" />
+            <SocialLink href="mailto:nick@daintydust.dev" src={EmailLogo} alt="Email" />
             <SocialLink href="/linkedin" src={LinkedInLogo} alt="LinkedIn" />
             <SocialLink href="/github" src={GithubLogo} alt="GitHub" />
             <SocialLink href="" src={DiscordLogo} alt="Discord" className="discord-username-copy-popup" />
