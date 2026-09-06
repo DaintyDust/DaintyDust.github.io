@@ -1,35 +1,37 @@
 import "./styles/app.css";
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Index from "@/pages/Index/Index";
 import LinkTree from "@/pages/LinkTree/LinkTree";
-// import Snake from "@/pages/Snake/Snake";
+import RobloxAccounts from "@/pages/RobloxAccounts/RobloxAccounts";
 import NotFound from "@/pages/NotFound/NotFound";
-import externalRedirects from "./redirects";
-// import { locales } from "@/shared/locales";
+import { resolveRedirect } from "./redirects";
 
-function ExternalRedirect({ to }: { to: string }) {
-  window.location.href = to;
-  return null;
+function CatchAllRoute() {
+  const { pathname } = useLocation();
+  const destination = resolveRedirect(pathname);
+
+  useEffect(() => {
+    if (destination) {
+      window.location.replace(destination);
+    }
+  }, [destination]);
+
+  if (destination) {
+    return null;
+  }
+
+  return <NotFound />;
 }
 
 function App() {
-  // const localeKeys = Object.keys(locales) as Array<keyof typeof locales>;
-
   return (
     <Routes>
       <Route path="/" element={<Index lang="en" />} />
       <Route path="/nl" element={<Index lang="nl" />} />
-
-      {/* {localeKeys.map((lang) => (
-        <Route key={lang} path={`/${lang}`} element={<Index lang={lang} />} />
-      ))} */}
-
       <Route path="/linktree" element={<LinkTree />} />
-      {/* <Route path="/snake" element={<Snake />} /> */}
-      {Object.entries(externalRedirects).map(([path, url]) => (
-        <Route key={path} path={path} element={<ExternalRedirect to={url} />} />
-      ))}
-      <Route path="*" element={<NotFound />} />
+      <Route path="/robloxaccounts" element={<RobloxAccounts />} />
+      <Route path="*" element={<CatchAllRoute />} />
     </Routes>
   );
 }
