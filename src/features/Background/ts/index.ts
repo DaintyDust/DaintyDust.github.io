@@ -6,7 +6,8 @@ type CanvasPaintFn = (ctx: CanvasRenderingContext2D, layer: FullscreenCanvas) =>
 const STEP_LENGTH = 1;
 const CELL_SIZE = 8; //10;
 const BORDER_WIDTH = 2;
-const MAX_ELECTRONS = 1000;
+const isLowPower = typeof navigator !== "undefined" && Boolean(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+const MAX_ELECTRONS = isLowPower ? 400 : 750;
 const CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
 const CELL_REPAINT_INTERVAL: readonly [number, number] = [150, 350];
 const RANDOM_SPAWN_INTERVAL: readonly [number, number] = [300, 600];
@@ -65,7 +66,8 @@ class FullscreenCanvas {
   adjust() {
     const { canvas, context, disableScale } = this;
     const { innerWidth, innerHeight } = window;
-    const DPR = window.devicePixelRatio || 1;
+    const rawDPR = window.devicePixelRatio || 1;
+    const DPR = Math.min(rawDPR, 2);
 
     this.width = innerWidth;
     this.height = innerHeight;
@@ -401,18 +403,35 @@ function createRandomCell(options: CellOptions = {}) {
 function compactAndPaint(list: Cell[]) {
   const now = Date.now();
   let writeIndex = 0;
+  const toDraw: Cell[] = [];
 
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
 
     if (now >= item.expireAt) continue;
 
-    item.paintNextTo(mainLayer);
+    if (!item.nextUpdate || now >= item.nextUpdate) {
+      item.scheduleUpdate();
+      item.createElectrons();
+      toDraw.push(item);
+    }
+
     list[writeIndex] = item;
     writeIndex++;
   }
 
   list.length = writeIndex;
+
+  if (toDraw.length > 0) {
+    mainLayer.paint((ctx) => {
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < toDraw.length; i++) {
+        const item = toDraw[i];
+        ctx.fillStyle = item.background;
+        ctx.fillRect(item.startX, item.startY, CELL_SIZE, CELL_SIZE);
+      }
+    });
+  }
 }
 
 let nextRandomAt = 0;
@@ -555,6 +574,11 @@ function prepaint() {
 }
 
 function render() {
+  if (typeof document !== "undefined" && document.hidden) {
+    renderFrameId = requestAnimationFrame(render);
+    return;
+  }
+
   mainLayer.blendBackground(bgLayer.canvas);
 
   drawItems();

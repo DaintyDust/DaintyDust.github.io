@@ -7,7 +7,8 @@ const STEP_LENGTH = 1;
 const CELL_SIZE = 8; //10;
 const BORDER_WIDTH = 2;
 const MAX_FONT_SIZE = 500;
-const MAX_ELECTRONS = 750;
+const isLowPower = typeof navigator !== "undefined" && Boolean(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
+const MAX_ELECTRONS = isLowPower ? 400 : 650;
 const CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
 const CELL_REPAINT_INTERVAL: readonly [number, number] = [250, 550];
 const RANDOM_SPAWN_INTERVAL: readonly [number, number] = [300, 600];
@@ -69,7 +70,8 @@ class FullscreenCanvas {
   adjust() {
     const { canvas, context, disableScale } = this;
     const { innerWidth, innerHeight } = window;
-    const DPR = window.devicePixelRatio || 1;
+    const rawDPR = window.devicePixelRatio || 1;
+    const DPR = Math.min(rawDPR, 2);
 
     this.width = innerWidth;
     this.height = innerHeight;
@@ -494,6 +496,8 @@ const shape: ShapeController = {
 
   getTextMatrix(text, { fontWeight = "bold", fontFamily = FONT_FAMILY } = {}) {
     const { width, height } = shapeLayer;
+    let actualWidth = 0;
+    let actualFontSize = 0;
 
     shapeLayer.repaint((ctx) => {
       ctx.textAlign = "center";
@@ -503,17 +507,34 @@ const shape: ShapeController = {
       const measuredWidth = ctx.measureText(text).width || 1;
       const scale = width / measuredWidth;
       const fontSize = Math.min(MAX_FONT_SIZE, MAX_FONT_SIZE * scale * 0.8);
+      actualFontSize = fontSize;
 
       ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+      actualWidth = ctx.measureText(text).width || 1;
       ctx.fillText(text, width / 2, height / 2);
     });
 
-    const pixels = shapeLayer.context.getImageData(0, 0, width, height).data;
+    const pad = CELL_DISTANCE * 2;
+    const minX = Math.max(0, Math.floor((width - actualWidth) / 2 - pad));
+    const maxX = Math.min(width, Math.ceil((width + actualWidth) / 2 + pad));
+    const minY = Math.max(0, Math.floor((height - actualFontSize) / 2 - pad));
+    const maxY = Math.min(height, Math.ceil((height + actualFontSize) / 2 + pad));
+
+    const startX = Math.floor(minX / CELL_DISTANCE) * CELL_DISTANCE;
+    const startY = Math.floor(minY / CELL_DISTANCE) * CELL_DISTANCE;
+    const boundW = Math.min(width - startX, Math.ceil((maxX - startX) / CELL_DISTANCE) * CELL_DISTANCE);
+    const boundH = Math.min(height - startY, Math.ceil((maxY - startY) / CELL_DISTANCE) * CELL_DISTANCE);
+
+    if (boundW <= 0 || boundH <= 0) return [];
+
+    const pixels = shapeLayer.context.getImageData(startX, startY, boundW, boundH).data;
     const matrix: Coord[] = [];
 
-    for (let y = 0; y < height; y += CELL_DISTANCE) {
-      for (let x = 0; x < width; x += CELL_DISTANCE) {
-        const alpha = pixels[(x + y * width) * 4 + 3];
+    for (let dy = 0; dy < boundH; dy += CELL_DISTANCE) {
+      const y = startY + dy;
+      for (let dx = 0; dx < boundW; dx += CELL_DISTANCE) {
+        const x = startX + dx;
+        const alpha = pixels[(dx + dy * boundW) * 4 + 3];
 
         if (alpha > 0) {
           matrix.push([Math.floor(y / CELL_DISTANCE), Math.floor(x / CELL_DISTANCE)]);
@@ -645,18 +666,35 @@ function createRandomCell(options: CellOptions = {}) {
 function compactAndPaint(list: Cell[]) {
   const now = Date.now();
   let writeIndex = 0;
+  const toDraw: Cell[] = [];
 
   for (let i = 0; i < list.length; i++) {
     const item = list[i];
 
     if (now >= item.expireAt) continue;
 
-    item.paintNextTo(mainLayer);
+    if (!item.nextUpdate || now >= item.nextUpdate) {
+      item.scheduleUpdate();
+      item.createElectrons();
+      toDraw.push(item);
+    }
+
     list[writeIndex] = item;
     writeIndex++;
   }
 
   list.length = writeIndex;
+
+  if (toDraw.length > 0) {
+    mainLayer.paint((ctx) => {
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < toDraw.length; i++) {
+        const item = toDraw[i];
+        ctx.fillStyle = item.background;
+        ctx.fillRect(item.startX, item.startY, CELL_SIZE, CELL_SIZE);
+      }
+    });
+  }
 }
 
 let nextRandomAt = 0;
@@ -852,6 +890,11 @@ function prepaint() {
 }
 
 function render() {
+  if (typeof document !== "undefined" && document.hidden) {
+    shape.renderID = requestAnimationFrame(render);
+    return;
+  }
+
   mainLayer.blendBackground(bgLayer.canvas);
 
   drawItems();
