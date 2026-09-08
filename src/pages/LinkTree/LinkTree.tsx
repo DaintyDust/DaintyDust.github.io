@@ -20,13 +20,13 @@ function LinkTree() {
       </Link>
       <Widget HeaderTitle="Social Links" draggable={false}>
         <div className="social-links">
-          <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" />
-          <SocialLink href="/github" src={GithubLogo} alt="GitHub" />
+          <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" target="_blank" />
+          <SocialLink href="/github" src={GithubLogo} alt="GitHub" target="_blank" />
           <SocialLink href="" src={DiscordLogo} alt="Discord" className="discord-username-copy-popup" />
-          <SocialLink href="/twitter" src={TwitterLogo} alt="Twitter" />
-          <SocialLink href="/twitch" src={TwitchLogo} alt="Twitch" />
+          <SocialLink href="/twitter" src={TwitterLogo} alt="Twitter" target="_blank" />
+          <SocialLink href="/twitch" src={TwitchLogo} alt="Twitch" target="_blank" />
           <SocialLink href="/robloxaccounts" src={RobloxLogo} alt="Roblox Accounts" />
-          <SocialLink href="/group" src={NickStudiosLogo} alt="Nick Studios Group" />
+          <SocialLink href="/group" src={NickStudiosLogo} alt="Nick Studios Group" target="_blank" />
         </div>
       </Widget>
       <Popup headerTitle="Discord Username" text="DaintyDust" />
