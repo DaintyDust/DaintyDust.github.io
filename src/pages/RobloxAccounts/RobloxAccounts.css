@@ -1,0 +1,261 @@
+.roblox-page-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #1d2227;
+  border: 2px solid #13191f;
+  padding: 24px;
+  border-radius: 0;
+  color: #ffffff;
+  font-family: "Helvetica", Arial, sans-serif;
+  z-index: 1000;
+  max-width: 960px;
+  width: 94%;
+  max-height: 82vh;
+  overflow-y: auto;
+  box-shadow:
+    0 0 0 1px #13191f,
+    0 0 25px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 129, 167, 0.15);
+  scrollbar-width: thin;
+  scrollbar-color: #13191f #1d2227;
+  user-select: none;
+}
+
+.roblox-page-content::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 10px 10px;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.roblox-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #13191f;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.roblox-page-title {
+  margin: 0;
+  font-size: 20px;
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  letter-spacing: 1px;
+}
+
+.roblox-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #13191f;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #00b4d8;
+  font-family: monospace;
+  letter-spacing: 0.5px;
+}
+
+.roblox-accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.roblox-account-card {
+  background: #13191f;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 14px 16px;
+  border-radius: 0;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.roblox-account-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 180, 216, 0.12), transparent);
+  transition: left 0.5s ease;
+}
+
+.roblox-account-card:hover::before {
+  left: 100%;
+}
+
+.roblox-account-card:hover {
+  border-color: #0081a7;
+  background: #162029;
+  box-shadow: 0 0 15px rgba(0, 129, 167, 0.4);
+  transform: translateX(3px);
+}
+
+.roblox-account-card.loading {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.roblox-avatar {
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0;
+  flex-shrink: 0;
+  background: #1d2227;
+  transition: all 0.2s ease;
+}
+
+.roblox-account-card:hover .roblox-avatar {
+  border-color: #00b4d8;
+  filter: brightness(1.15) saturate(1.1);
+}
+
+.roblox-avatar-placeholder {
+  width: 54px;
+  height: 54px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #1d2227;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.roblox-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.roblox-display-name {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roblox-account-card:hover .roblox-display-name {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0, 180, 216, 0.6);
+}
+
+.roblox-username {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  font-family: monospace;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roblox-card-error {
+  border-color: #ff6b6b55;
+}
+
+.roblox-card-error .roblox-display-name {
+  color: #ff6b6b;
+}
+
+/* Group Widget inside Floating Window */
+.roblox-group-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+.roblox-group-card:hover {
+  transform: translateX(2px);
+}
+
+.roblox-group-icon {
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(0, 180, 216, 0.4);
+  border-radius: 0;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.roblox-group-card:hover .roblox-group-icon {
+  border-color: #00b4d8;
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+}
+
+.roblox-group-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.roblox-group-name {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roblox-group-card:hover .roblox-group-name {
+  color: #00b4d8;
+  text-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+}
+
+.roblox-group-stat {
+  color: #00b4d8;
+  font-size: 11px;
+  font-family: monospace;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 768px) {
+  .roblox-page-content {
+    width: calc(100% - 24px);
+    max-height: calc(100vh - 40px);
+    padding: 16px;
+  }
+
+  .roblox-accounts-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
