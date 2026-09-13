@@ -5,13 +5,15 @@ import "./styles/Widget.css";
 import "./styles/Widget.not-draggable.css";
 import type { WidgetStartPosition } from "@/shared/types/widget";
 
-type FloatingPosition = NonNullable<UseFloatingWindowOptions["initialPosition"]>;
+export type FloatingPosition = NonNullable<UseFloatingWindowOptions["initialPosition"]>;
 
-interface WidgetProps {
+export interface WidgetProps {
   HeaderTitle: string;
   draggable?: boolean;
   position?: WidgetStartPosition;
+  initialPosition?: FloatingPosition;
   offset?: number;
+  width?: number | string;
   children?: ReactNode;
   className?: string;
 }
@@ -47,14 +49,19 @@ function Widget({
   HeaderTitle,
   draggable = true,
   position = "bottom-right",
+  initialPosition: customInitialPosition,
   offset = DEFAULT_OFFSET,
+  width,
   children,
   className,
 }: WidgetProps) {
   const [collapsed, setCollapsed] = useState(false);
   const [zIndex, setZIndex] = useState(10000);
 
-  const initialPosition = useMemo(() => resolveStartPosition(position, offset), [position, offset]);
+  const initialPosition = useMemo(
+    () => customInitialPosition ?? resolveStartPosition(position, offset),
+    [customInitialPosition, position, offset],
+  );
 
   const bringToTop = () => {
     topZIndex += 1;
@@ -91,6 +98,7 @@ function Widget({
       onDragStart={bringToTop}
       onMouseDownCapture={bringToTop}
       onTouchStartCapture={bringToTop}
+      style={{ ...(width ? { width } : {}) }}
       className={`social-widget${collapsed ? " collapsed" : ""}${className ? ` ${className}` : ""}`}
     >
       <div className="social-widget-header">

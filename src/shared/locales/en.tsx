@@ -15,11 +15,11 @@ export const en: LocaleContent = {
       content: (
         <>
           <div className="social-links">
-            <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" />
-            <SocialLink href="/twitter" src={TwitterLogo} alt="Twitter" />
-            <SocialLink href="/github" src={GithubLogo} alt="GitHub" />
+            <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" target="_blank" />
+            <SocialLink href="/twitter" src={TwitterLogo} alt="Twitter" target="_blank" />
+            <SocialLink href="/github" src={GithubLogo} alt="GitHub" target="_blank" />
             <SocialLink href="" src={DiscordLogo} alt="Discord" className="discord-username-copy-popup" />
-            <SocialLink href="/roblox" src={RobloxLogo} alt="Roblox" />
+            <SocialLink href="/roblox" src={RobloxLogo} alt="Roblox" target="_blank" />
           </div>
           <div className="widget-footer">
             <Link to="/linktree" className="linktree-btn">

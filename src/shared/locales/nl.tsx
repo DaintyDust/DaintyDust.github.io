@@ -15,8 +15,8 @@ export const nl: LocaleContent = {
         <>
           <div className="social-links">
             <SocialLink href="mailto:nick@daintydust.dev" src={EmailLogo} alt="Email" />
-            <SocialLink href="/linkedin" src={LinkedInLogo} alt="LinkedIn" />
-            <SocialLink href="/github" src={GithubLogo} alt="GitHub" />
+            <SocialLink href="/linkedin" src={LinkedInLogo} alt="LinkedIn" target="_blank" />
+            <SocialLink href="/github" src={GithubLogo} alt="GitHub" target="_blank" />
             <SocialLink href="" src={DiscordLogo} alt="Discord" className="discord-username-copy-popup" />
           </div>
         </>
@@ -28,7 +28,7 @@ export const nl: LocaleContent = {
       content: (
         <>
           <div>
-            <p>Ik ben Nick Verbruggen, een {new Date().getFullYear() - 2008 - (new Date() < new Date(new Date().getFullYear(), 2, 11) ? 1 : 0)} jarige Student uit Brabant met een passie voor programmeren en gamen.</p>
+            <p>Ik ben Nick, een {new Date().getFullYear() - 2008 - (new Date() < new Date(new Date().getFullYear(), 2, 11) ? 1 : 0)} jarige Student uit Brabant met een passie voor programmeren en gamen.</p>
           </div>
         </>
       ),
