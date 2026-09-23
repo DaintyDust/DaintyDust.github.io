@@ -4,6 +4,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Index from "@/pages/Index/Index";
 import LinkTree from "@/pages/LinkTree/LinkTree";
 import RobloxAccounts from "@/pages/RobloxAccounts/RobloxAccounts";
+import Portfolio from "@/pages/Portfolio/Portfolio";
 import NotFound from "@/pages/NotFound/NotFound";
 import { resolveRedirect } from "./redirects";
 
@@ -31,6 +32,8 @@ function App() {
       <Route path="/nl" element={<Index lang="nl" />} />
       <Route path="/linktree" element={<LinkTree />} />
       <Route path="/robloxaccounts" element={<RobloxAccounts />} />
+      <Route path="/portfolio" element={<Portfolio />} />
+      <Route path="/projects" element={<Portfolio />} />
       <Route path="*" element={<CatchAllRoute />} />
     </Routes>
   );
