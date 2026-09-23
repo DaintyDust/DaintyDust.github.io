@@ -33,22 +33,21 @@ export const nl: LocaleContent = {
         </>
       ),
     },
-    // {
-    //   title: "Mijn Projecten",
-    //   position: "bottom-left",
-    //   content: (
-    //     <>
-    //       <div>
-    //         <h3>Mijn Project</h3>
-    //         <p>Dit is een speciale widget alleen voor NL</p>
-    //       </div>
-    //       <div className="widget-footer">
-    //         <a href="/projects" className="project-btn">
-    //           Bekijk alle projecten
-    //         </a>
-    //       </div>
-    //     </>
-    //   ),
-    // },
+    {
+      title: "Mijn Projecten",
+      position: "bottom-left",
+      content: (
+        <>
+          <div>
+            <p>Hier kan je mijn projecten bekijken</p>
+          </div>
+          <div className="widget-footer">
+            <a href="/projects" className="project-btn">
+              Bekijk alle projecten
+            </a>
+          </div>
+        </>
+      ),
+    },
   ],
 };
