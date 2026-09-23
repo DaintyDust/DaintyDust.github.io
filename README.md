@@ -1,32 +1,45 @@
-# React + TypeScript + Vite
+# My Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Welcome to my website. This website is mainly used to show my portfolio.
+I built it with React and Mantine UI because it makes it really easy to create compnents.
 
-Currently, two official plugins are available:
+<!-- Replace the line below with a real screenshot or GIF of the site -->
+![Portfolio screenshot](./src/assets/Website.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Try It
 
-## React Compiler
+Visit the website **https://daintydust.github.io**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the Oxlint configuration
+- Portfolio page showcasing personal projects with images and descriptions
+- Link tree page with quick links to social profiles and other resources
+- List of Roblox accounts page
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Running Locally
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+**Requirements:** Node.js 20+
+
+```bash
+# Install dependencies
+npm install
+
+# Start the dev server
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
+
+
+## How It Works
+
+The site is a React SPA (using React Router) bundled by Vite. Mantine provides the component library, like the carousel on the portfolio page and the lightbox for project images.
+
+## Built With
+
+- **Mantine**: UI library for React to easily create UI components.
+- **Vite**: Build tool and dev server.
+- **React Router**: Client-side routing.
+- **Visual Studio Code**: Development environment to write code.
+- **GitHub Pages**: Hosts the the code for the website alias.
+- **Cloudflare Pages**: Hosts the website and the domain.
