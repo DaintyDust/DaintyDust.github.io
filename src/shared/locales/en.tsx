@@ -29,5 +29,21 @@ export const en: LocaleContent = {
         </>
       ),
     },
+    {
+      title: "My Projects",
+      position: "bottom-left",
+      content: (
+        <>
+          <div>
+            <p>You can check out my projects here</p>
+          </div>
+          <div className="widget-footer">
+            <a href="/projects" className="project-btn">
+              View All Projects
+            </a>
+          </div>
+        </>
+      ),
+    },
   ],
 };
