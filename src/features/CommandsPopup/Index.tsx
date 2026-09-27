@@ -6,12 +6,13 @@ import "./styles/CommandsPopup.css";
 interface CommandsWidgetProps {
   HasText?: boolean;
   DefaultText?: string;
+  DefaultVisible?: boolean;
 }
 
-function CommandsWidget({ HasText = false, DefaultText }: CommandsWidgetProps) {
+function CommandsWidget({ HasText = false, DefaultText, DefaultVisible = false }: CommandsWidgetProps) {
   const availableCommandOptions = HasText ? commandOptions : noTextCommandOptions;
 
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(DefaultVisible);
   const [text, setText] = useState("");
   const [bgColor, setBgColor] = useState<string>(DEFAULT_COMMAND_THEME_COLORS.bgColor);
   const [borderColor, setBorderColor] = useState<string>(DEFAULT_COMMAND_THEME_COLORS.borderColor);
@@ -80,7 +81,7 @@ function CommandsWidget({ HasText = false, DefaultText }: CommandsWidgetProps) {
   }
 
   return (
-    <Widget HeaderTitle="Commands" className="commands-widget" position="top-center">
+    <Widget HeaderTitle="Commands" className="commands-widget" position={DefaultVisible ? "bottom-left" : "top-center"}>
       <form className="commands-form" onSubmit={handleSubmit}>
         {HasText && (
           <div className="commands-row commands-row-single">

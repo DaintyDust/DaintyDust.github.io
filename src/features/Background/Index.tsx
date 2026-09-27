@@ -4,6 +4,7 @@ import CommandsWidget from "@/features/CommandsPopup/Index";
 type BackgroundProps = {
   Font?: boolean;
   text?: string;
+  showCommands?: boolean;
 };
 
 type BackgroundModule = {
@@ -11,7 +12,7 @@ type BackgroundModule = {
   destroy?: () => void;
 };
 
-function Background({ Font = false, text }: BackgroundProps) {
+function Background({ Font = false, text, showCommands = false }: BackgroundProps) {
   useEffect(() => {
     let disposed = false;
     let activeModule: BackgroundModule | undefined;
@@ -36,7 +37,7 @@ function Background({ Font = false, text }: BackgroundProps) {
     };
   }, [Font, text]);
 
-  return <CommandsWidget DefaultText={text} HasText={Font} />;
+  return <CommandsWidget DefaultText={text} HasText={Font} DefaultVisible={showCommands} />;
 }
 
 export default Background;
