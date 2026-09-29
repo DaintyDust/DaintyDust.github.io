@@ -4,7 +4,7 @@ import Background from "@/features/Background/Index";
 import * as paintMod from "@/features/Background/ts/paint";
 import Widget from "@/features/SocialWidget";
 import "./Paint.css";
-import { Pencil, Brush, Square, Circle, Type, Eraser, Trash } from "lucide-react";
+import { Pencil, Brush, Square, Circle, Eraser, Trash } from "lucide-react";
 
 type Tool = "pen" | "brush" | "rect" | "circle" | "text" | "eraser";
 type Cell = { row: number; col: number; color: string };
