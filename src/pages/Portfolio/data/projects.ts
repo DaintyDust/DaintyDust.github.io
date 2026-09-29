@@ -40,6 +40,10 @@ export const projectsData: ProjectItem[] = [
         name: "Roblox Studio",
         badgeUrl: "https://img.shields.io/badge/Roblox_Studio-000000?style=flat&logo=roblox&logoColor=white",
       },
+      {
+        name: "Visits",
+        badgeUrl: "https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgames.roproxy.com%2Fv1%2Fgames%3FuniverseIds%3D4106830353&query=%24.data%5B0%5D.visits&label=Visits&color=00A2FF&logo=roblox&logoColor=white&style=flat",
+      },
     ],
   },
   // {
