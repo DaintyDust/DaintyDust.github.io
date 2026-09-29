@@ -6,6 +6,7 @@ import LinkTree from "@/pages/LinkTree/LinkTree";
 import RobloxAccounts from "@/pages/RobloxAccounts/RobloxAccounts";
 import Portfolio from "@/pages/Portfolio/Portfolio";
 import Sandbox from "@/pages/Sandbox/Sandbox";
+import Paint from "@/pages/Paint/Paint";
 import NotFound from "@/pages/NotFound/NotFound";
 import { resolveRedirect } from "./redirects";
 
@@ -36,6 +37,7 @@ function App() {
       <Route path="/portfolio" element={<Portfolio />} />
       <Route path="/projects" element={<Portfolio />} />
       <Route path="/sandbox" element={<Sandbox />} />
+      <Route path="/paint" element={<Paint />} />
       <Route path="*" element={<CatchAllRoute />} />
     </Routes>
   );
