@@ -27,19 +27,35 @@ type PaintedCell = { row: number; col: number; color: string };
 const USER_PREVIEW_CELLS: PaintedCell[] = [];
 const USER_PAINT_CELLS: PaintedCell[] = [];
 
-const MOVE_TRAILS: Coord[] = [
+let MOVE_TRAILS: Coord[] = [
   [0, 1],
   [0, -1],
   [1, 0],
   [-1, 0],
 ].map(([x, y]) => [x * CELL_DISTANCE, y * CELL_DISTANCE]);
 
-const END_POINTS_OFFSET: Coord[] = [
+let END_POINTS_OFFSET: Coord[] = [
   [0, 0],
   [0, 1],
   [1, 0],
   [1, 1],
 ].map(([x, y]) => [x * CELL_DISTANCE - BORDER_WIDTH / 2, y * CELL_DISTANCE - BORDER_WIDTH / 2]);
+
+function updateGridOffsets() {
+  MOVE_TRAILS = [
+    [0, 1],
+    [0, -1],
+    [1, 0],
+    [-1, 0],
+  ].map(([x, y]) => [x * CELL_DISTANCE, y * CELL_DISTANCE]);
+
+  END_POINTS_OFFSET = [
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1],
+  ].map(([x, y]) => [x * CELL_DISTANCE - BORDER_WIDTH / 2, y * CELL_DISTANCE - BORDER_WIDTH / 2]);
+}
 
 class FullscreenCanvas {
   canvas: HTMLCanvasElement;
@@ -937,6 +953,8 @@ export function setCellSize(newSize: number) {
   CELL_SIZE = newSize;
   BORDER_WIDTH = newSize < 8 ? 1 : 2;
   CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
+  updateGridOffsets();
+  ACTIVE_ELECTRONS.length = 0;
   drawGrid();
 }
 
