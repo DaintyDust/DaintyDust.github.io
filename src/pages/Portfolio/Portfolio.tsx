@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { useMediaQuery } from "@mantine/hooks";
+import { _React, Html5, Css3, Lua, TypescriptIcon, Javascript, GitIcon, Php, Laravel } from "@dev.icons/react";
 import Background from "@/features/Background/Index";
 import ProjectWidget from "./components/ProjectWidget";
+import Widget from "@/features/SocialWidget";
 import { projectsData } from "./data/projects";
 import "./Portfolio.css";
 
@@ -87,6 +89,47 @@ export default function Portfolio() {
       <Link to="/" className="back-button">
         ← Back
       </Link>
+
+      <Widget key={"tech-stack"} HeaderTitle={"Tech Stack"} draggable={true} position={"top-right"}>
+        <div className="tech-stack-list">
+          <div className="tech-stack-item">
+            <Lua />
+            <span>Lua / Luau</span>
+          </div>
+          <div className="tech-stack-item">
+            <Html5 />
+            <span>HTML</span>
+          </div>
+          <div className="tech-stack-item">
+            <TypescriptIcon />
+            <span>TypeScript</span>
+          </div>
+          <div className="tech-stack-item">
+            <Javascript />
+            <span>JavaScript</span>
+          </div>
+          <div className="tech-stack-item">
+            <_React />
+            <span>React</span>
+          </div>
+          <div className="tech-stack-item">
+            <Css3 />
+            <span>CSS</span>
+          </div>
+          <div className="tech-stack-item">
+            <Php />
+            <span>PHP</span>
+          </div>
+          <div className="tech-stack-item">
+            <GitIcon />
+            <span>Git</span>
+          </div>
+          <div className="tech-stack-item">
+            <Laravel />
+            <span>Laravel</span>
+          </div>
+        </div>
+      </Widget>
 
       <div className="portfolio-scroll-container">
         <div className="portfolio-header">
