@@ -1,10 +1,11 @@
+import { Pencil, Brush, Square, Circle, Type, Eraser, Trash } from "lucide-react";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Background from "@/features/Background/Index";
 import * as paintMod from "@/features/Background/ts/paint";
 import Widget from "@/features/SocialWidget";
+import "@/components/Popup/styles/Popup.css";
 import "./Paint.css";
-import { Pencil, Brush, Square, Circle, Eraser, Trash } from "lucide-react";
 
 type Tool = "pen" | "brush" | "rect" | "circle" | "text" | "eraser";
 type Cell = { row: number; col: number; color: string };
@@ -27,6 +28,38 @@ function roundBrushCells(row: number, col: number, color: string, density: numbe
     }
   }
   return cells;
+}
+
+const FONT_FAMILY = 'Inter, Helvetica, Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuan Yi Micro Hei", sans-serif';
+
+function drawTextToGrid(text: string, startRow: number, startCol: number, color: string, size: number) {
+  const fontSize = Math.max(10, size * 4 + 8);
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const font = `bold ${fontSize}px ${FONT_FAMILY}`;
+  ctx.font = font;
+  const width = Math.ceil(ctx.measureText(text).width) || 1;
+  const height = Math.ceil(fontSize * 1.3);
+
+  canvas.width = width;
+  canvas.height = height;
+
+  ctx.font = font;
+  ctx.textBaseline = "top";
+  ctx.fillStyle = "#ffffff";
+  ctx.fillText(text, 0, 0);
+
+  const data = ctx.getImageData(0, 0, width, height).data;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const alpha = data[(y * width + x) * 4 + 3];
+      if (alpha > 128) {
+        paintMod.paintCell(startRow + y, startCol + x, color);
+      }
+    }
+  }
 }
 
 function getPreviewCells(tool: Tool, color: string, density: number, hover: { row: number; col: number }, start: { row: number; col: number } | null): Cell[] {
@@ -84,6 +117,11 @@ export default function Paint() {
   const [color, setColor] = useState("#00b4d8");
   const [density, setDensity] = useState(1);
   const [cellSize, setCellSize] = useState(8);
+  const [activeText, setActiveText] = useState<{
+    row: number;
+    col: number;
+    text: string;
+  } | null>(null);
   const isDrawing = useRef(false);
   const startCell = useRef<{ row: number; col: number } | null>(null);
 
@@ -150,26 +188,25 @@ export default function Paint() {
 
   const onMouseDown = useCallback(
     (e: React.MouseEvent) => {
-      if ((e.target as HTMLElement).closest(".social-widget")) return;
+      if ((e.target as HTMLElement).closest(".social-widget") || (e.target as HTMLElement).closest(".popup")) return;
       const cursor = getCellFromEvent(e);
 
       isDrawing.current = true;
       startCell.current = cursor;
 
-    //   if (tool === "text") {
-    //     const text = prompt("Voer tekst in:");
-    //     if (!text) return;
-    //     let dc = 0;
-    //     for (const _ch of text) {
-    //       paintMod.paintCell(cursor.row, cursor.col + dc, color);
-    //       dc += 2;
-    //     }
-    //     return;
-    //   }
+      if (tool === "text") {
+        e.preventDefault();
+        if (activeText && activeText.text.trim()) {
+          drawTextToGrid(activeText.text, activeText.row, activeText.col, color, density);
+        }
+
+        setActiveText({ row: cursor.row, col: cursor.col, text: "" });
+        return;
+      }
 
       applyTool(e);
     },
-    [tool, color, getCellFromEvent, applyTool],
+    [tool, color, density, activeText, getCellFromEvent, applyTool],
   );
 
   const onMouseMove = useCallback(
@@ -212,12 +249,12 @@ export default function Paint() {
     { id: "brush", icon: <Brush />, label: "Brush" },
     { id: "rect", icon: <Square />, label: "Rectangle" },
     { id: "circle", icon: <Circle />, label: "Circle" },
-    // { id: "text", icon: <Type />, label: "Text" },
+    { id: "text", icon: <Type />, label: "Text" },
     { id: "eraser", icon: <Eraser />, label: "Eraser" },
   ];
 
   return (
-    <div style={{ width: "100vw", height: "100vh", cursor: "crosshair" }} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={() => paintMod.clearPreview()}>
+    <div style={{ width: "100vw", height: "100vh", cursor: tool === "text" ? "text" : "crosshair" }} onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={() => paintMod.clearPreview()}>
       <Background paint={true} />
 
       <Link to="/" className="back-button">
@@ -263,6 +300,48 @@ export default function Paint() {
           </button>
         </div>
       </Widget>
+      {activeText && (
+        <input
+          type="text"
+          autoFocus
+          placeholder="Type here..."
+          value={activeText.text}
+          onMouseDown={(e) => e.stopPropagation()}
+          onChange={(e) => setActiveText({ ...activeText, text: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              if (activeText.text.trim()) {
+                drawTextToGrid(activeText.text, activeText.row, activeText.col, color, density);
+              }
+              setActiveText(null);
+            } else if (e.key === "Escape") {
+              setActiveText(null);
+            }
+          }}
+          onBlur={() => {
+            if (activeText.text.trim()) {
+              drawTextToGrid(activeText.text, activeText.row, activeText.col, color, density);
+            }
+            setActiveText(null);
+          }}
+          style={{
+            position: "fixed",
+            left: `${activeText.col * (paintMod.getCellDistance ? paintMod.getCellDistance() : paintMod.CELL_DISTANCE)}px`,
+            top: `${activeText.row * (paintMod.getCellDistance ? paintMod.getCellDistance() : paintMod.CELL_DISTANCE)}px`,
+            background: "rgba(19, 25, 31, 0.85)",
+            border: `1px dashed ${color}`,
+            outline: "none",
+            color: color,
+            caretColor: color,
+            fontSize: `${Math.max(12, density * 3 + 10)}px`,
+            fontFamily: "Inter, Helvetica, Arial, sans-serif",
+            fontWeight: "bold",
+            padding: "2px 6px",
+            zIndex: 100,
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)",
+          }}
+        />
+      )}
     </div>
   );
 }
