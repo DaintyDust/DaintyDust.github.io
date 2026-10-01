@@ -1,4 +1,4 @@
-import { Pencil, Brush, Square, Circle, Type, Eraser, Trash } from "lucide-react";
+import { Pencil, Brush, Square, Circle, Type, Eraser, Trash, PaintBucket } from "lucide-react";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Background from "@/features/Background/Index";
@@ -7,7 +7,7 @@ import Widget from "@/features/SocialWidget";
 import "@/components/Popup/styles/Popup.css";
 import "./Paint.css";
 
-type Tool = "pen" | "brush" | "rect" | "circle" | "text" | "eraser";
+type Tool = "pen" | "brush" | "fill" | "rect" | "circle" | "text" | "eraser";
 type Cell = { row: number; col: number; color: string };
 
 function brushCells(row: number, col: number, color: string, density: number): Cell[] {
@@ -71,6 +71,10 @@ function getPreviewCells(tool: Tool, color: string, density: number, hover: { ro
 
   if (tool === "brush") {
     return roundBrushCells(hover.row, hover.col, color, density);
+  }
+
+  if (tool === "fill") {
+    return [{ row: hover.row, col: hover.col, color }];
   }
 
   if (tool === "eraser") {
@@ -204,6 +208,11 @@ export default function Paint() {
         return;
       }
 
+      if (tool === "fill") {
+        paintMod.fillCells(cursor.row, cursor.col, color);
+        return;
+      }
+
       applyTool(e);
     },
     [tool, color, density, activeText, getCellFromEvent, applyTool],
@@ -247,6 +256,7 @@ export default function Paint() {
   const tools: { id: Tool; icon: React.ReactNode; label: string }[] = [
     { id: "pen", icon: <Pencil />, label: "Pencil" },
     { id: "brush", icon: <Brush />, label: "Brush" },
+    { id: "fill", icon: <PaintBucket />, label: "Fill" },
     { id: "rect", icon: <Square />, label: "Rectangle" },
     { id: "circle", icon: <Circle />, label: "Circle" },
     { id: "text", icon: <Type />, label: "Text" },

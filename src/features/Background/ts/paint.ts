@@ -949,6 +949,68 @@ export function eraseCell(row: number, col: number) {
   }
 }
 
+export function fillCells(startRow: number, startCol: number, fillColor: string) {
+  const cd = CELL_DISTANCE;
+  const maxRows = Math.ceil(window.innerHeight / cd);
+  const maxCols = Math.ceil(window.innerWidth / cd);
+
+  if (startRow < 0 || startRow >= maxRows || startCol < 0 || startCol >= maxCols) return;
+
+  const cellIndexMap = new Map<string, number>();
+  for (let i = 0; i < USER_PAINT_CELLS.length; i++) {
+    const c = USER_PAINT_CELLS[i];
+    cellIndexMap.set(`${c.row},${c.col}`, i);
+  }
+
+  const startKey = `${startRow},${startCol}`;
+  const startIdx = cellIndexMap.get(startKey);
+  const targetColor = startIdx !== undefined ? USER_PAINT_CELLS[startIdx].color : null;
+
+  if (targetColor === fillColor) return;
+
+  const queue: [number, number][] = [[startRow, startCol]];
+  const visited = new Set<string>([startKey]);
+
+  let count = 0;
+  const MAX_CELLS = 25000;
+
+  while (queue.length > 0 && count < MAX_CELLS) {
+    const [r, c] = queue.shift()!;
+    count++;
+
+    const key = `${r},${c}`;
+    const idx = cellIndexMap.get(key);
+
+    if (idx !== undefined) {
+      USER_PAINT_CELLS[idx].color = fillColor;
+    } else {
+      cellIndexMap.set(key, USER_PAINT_CELLS.length);
+      USER_PAINT_CELLS.push({ row: r, col: c, color: fillColor });
+    }
+
+    const neighbors: [number, number][] = [
+      [r + 1, c],
+      [r - 1, c],
+      [r, c + 1],
+      [r, c - 1],
+    ];
+
+    for (const [nr, nc] of neighbors) {
+      if (nr < 0 || nr >= maxRows || nc < 0 || nc >= maxCols) continue;
+      const nKey = `${nr},${nc}`;
+      if (visited.has(nKey)) continue;
+
+      const nIdx = cellIndexMap.get(nKey);
+      const nColor = nIdx !== undefined ? USER_PAINT_CELLS[nIdx].color : null;
+
+      if (nColor === targetColor) {
+        visited.add(nKey);
+        queue.push([nr, nc]);
+      }
+    }
+  }
+}   
+
 export function setCellSize(newSize: number) {
   CELL_SIZE = newSize;
   BORDER_WIDTH = newSize < 8 ? 1 : 2;
