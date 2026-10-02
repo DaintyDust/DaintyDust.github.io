@@ -18,7 +18,7 @@ function LinkTree() {
       <Link to="/" className="back-button">
         ← Back
       </Link>
-      <Widget HeaderTitle="Social Links" draggable={false}>
+      <Widget HeaderTitle="Social Links" draggable={false} className="linktree-widget">
         <div className="social-links">
           <SocialLink href="/youtube" src={YoutubeLogo} alt="YouTube" target="_blank" />
           <SocialLink href="/github" src={GithubLogo} alt="GitHub" target="_blank" />

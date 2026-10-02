@@ -82,6 +82,31 @@ export default function Portfolio() {
     return { positions: pos, totalHeight: maxBottom + 60 };
   }, [displayedProjects, itemHeights]);
 
+  const TECH_STACK = [
+    { Icon: Lua, name: "Lua / Luau" },
+    { Icon: Html5, name: "HTML" },
+    { Icon: TypescriptIcon, name: "TypeScript" },
+    { Icon: Javascript, name: "JavaScript" },
+    { Icon: _React, name: "React" },
+    { Icon: Css3, name: "CSS" },
+    { Icon: Php, name: "PHP" },
+    { Icon: GitIcon, name: "Git" },
+    { Icon: Laravel, name: "Laravel" },
+  ];
+
+  const techStackWidget = (
+    <Widget HeaderTitle="Tech Stack" draggable={!isMobile} position="top-right">
+      <div className="tech-stack-list">
+        {TECH_STACK.map(({ Icon, name }) => (
+          <div key={name} className="tech-stack-item">
+            <Icon />
+            <span>{name}</span>
+          </div>
+        ))}
+      </div>
+    </Widget>
+  );          
+
   return (
     <>
       <Background />
@@ -90,46 +115,7 @@ export default function Portfolio() {
         ← Back
       </Link>
 
-      <Widget key={"tech-stack"} HeaderTitle={"Tech Stack"} draggable={true} position={"top-right"}>
-        <div className="tech-stack-list">
-          <div className="tech-stack-item">
-            <Lua />
-            <span>Lua / Luau</span>
-          </div>
-          <div className="tech-stack-item">
-            <Html5 />
-            <span>HTML</span>
-          </div>
-          <div className="tech-stack-item">
-            <TypescriptIcon />
-            <span>TypeScript</span>
-          </div>
-          <div className="tech-stack-item">
-            <Javascript />
-            <span>JavaScript</span>
-          </div>
-          <div className="tech-stack-item">
-            <_React />
-            <span>React</span>
-          </div>
-          <div className="tech-stack-item">
-            <Css3 />
-            <span>CSS</span>
-          </div>
-          <div className="tech-stack-item">
-            <Php />
-            <span>PHP</span>
-          </div>
-          <div className="tech-stack-item">
-            <GitIcon />
-            <span>Git</span>
-          </div>
-          <div className="tech-stack-item">
-            <Laravel />
-            <span>Laravel</span>
-          </div>
-        </div>
-      </Widget>
+      {!isMobile && techStackWidget}
 
       <div className="portfolio-scroll-container">
         <div className="portfolio-header">
@@ -141,13 +127,17 @@ export default function Portfolio() {
         </div>
 
         {isMobile ? (
-          <div className="portfolio-timeline single-column">
-            {displayedProjects.map((project) => (
-              <div key={project.id} className="portfolio-item">
-                <ProjectWidget project={project} />
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="portfolio-timeline single-column">
+              {displayedProjects.map((project) => (
+                <div key={project.id} className="portfolio-item">
+                  <ProjectWidget project={project} />
+                </div>
+              ))}
+            </div>
+
+            <div className="portfolio-mobile-tech-stack">{techStackWidget}</div>
+          </>
         ) : (
           <div className="portfolio-timeline staggered-layout" style={{ height: `${totalHeight}px` }}>
             {displayedProjects.map((project, index) => {

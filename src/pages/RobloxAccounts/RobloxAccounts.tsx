@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useMediaQuery } from "@mantine/hooks";
 import Background from "@/features/Background/Index";
 import Widget from "@/features/SocialWidget";
 import RobloxAccountCard from "./components/RobloxAccountCard";
@@ -21,6 +22,7 @@ export default function RobloxAccounts() {
   );
 
   const [group, setGroup] = useState<GroupData | null>(null);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   useEffect(() => {
     let cancelled = false;
@@ -54,7 +56,7 @@ export default function RobloxAccounts() {
         ← Back
       </Link>
 
-      {group && (
+      {!isMobile && group && (
         <Widget HeaderTitle="Roblox Group" position="top-right">
           <RobloxGroupCard group={group} groupId={GROUP_ID} />
         </Widget>
@@ -71,6 +73,14 @@ export default function RobloxAccounts() {
             <RobloxAccountCard key={user.id} user={user} />
           ))}
         </div>
+
+        {isMobile && group && (
+          <div className="roblox-mobile-group-section">
+            <Widget HeaderTitle="Roblox Group" draggable={false}>
+              <RobloxGroupCard group={group} groupId={GROUP_ID} />
+            </Widget>
+          </div>
+        )}
       </div>
     </>
   );

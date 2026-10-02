@@ -715,7 +715,28 @@
   .portfolio-scroll-container {
     padding: 70px 14px 40px;
   }
+
   .project-lightbox-btn {
     opacity: 1;
+  }
+
+  .portfolio-mobile-tech-stack {
+    max-width: 600px;
+    width: calc(100% - 28px);
+    margin: 30px auto 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .portfolio-mobile-tech-stack .social-widget.not-draggable {
+    position: static;
+    transform: none;
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 20px;
+    box-sizing: border-box;
+    box-shadow:
+      0 0 0 1px #13191f,
+      0 0 15px rgba(0, 0, 0, 0.4);
   }
 }

@@ -142,3 +142,36 @@ body {
     font-size: 12px;
   }
 }
+
+@media (max-width: 768px) {
+  .linktree-widget.not-draggable {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 24px);
+    max-width: 440px;
+    height: calc(100dvh - 80px);
+    max-height: calc(100dvh - 80px);
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .linktree-widget .social-widget-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .linktree-widget .social-links {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    gap: 8px;
+    margin-bottom: 0;
+  }
+}
