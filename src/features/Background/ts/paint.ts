@@ -25,7 +25,10 @@ const PINNED_CELLS: Cell[] = [];
 
 type PaintedCell = { row: number; col: number; color: string };
 const USER_PREVIEW_CELLS: PaintedCell[] = [];
-const USER_PAINT_CELLS: PaintedCell[] = [];
+// const USER_PAINT_CELLS: PaintedCell[] = [];
+const USER_PAINT_MAP = new Map<string, string>();
+let paintCacheCanvas: HTMLCanvasElement | null = null;
+let paintCacheNeedsRedraw = true;   
 
 let MOVE_TRAILS: Coord[] = [
   [0, 1],
@@ -56,6 +59,41 @@ function updateGridOffsets() {
     [1, 1],
   ].map(([x, y]) => [x * CELL_DISTANCE - BORDER_WIDTH / 2, y * CELL_DISTANCE - BORDER_WIDTH / 2]);
 }
+
+function updatePaintCache() {
+  if (typeof window === "undefined") return;
+  if (!paintCacheCanvas) {
+    paintCacheCanvas = document.createElement("canvas");
+  }
+  if (paintCacheCanvas.width !== window.innerWidth || paintCacheCanvas.height !== window.innerHeight) {
+    paintCacheCanvas.width = window.innerWidth;
+    paintCacheCanvas.height = window.innerHeight;
+  }
+
+  const ctx = paintCacheCanvas.getContext("2d");
+  if (!ctx) return;
+  ctx.clearRect(0, 0, paintCacheCanvas.width, paintCacheCanvas.height);
+
+  const colorBuckets = new Map<string, { x: number; y: number }[]>();
+  USER_PAINT_MAP.forEach((color, key) => {
+    const [row, col] = key.split(",").map(Number);
+    let bucket = colorBuckets.get(color);
+    if (!bucket) {
+      bucket = [];
+      colorBuckets.set(color, bucket);
+    }
+    bucket.push({ x: col * CELL_DISTANCE, y: row * CELL_DISTANCE });
+  });
+
+  colorBuckets.forEach((points, color) => {
+    ctx.fillStyle = color;
+    for (let i = 0; i < points.length; i++) {
+      ctx.fillRect(points[i].x, points[i].y, CELL_SIZE, CELL_SIZE);
+    }
+  });
+
+  paintCacheNeedsRedraw = false;
+} 
 
 class FullscreenCanvas {
   canvas: HTMLCanvasElement;
@@ -826,14 +864,15 @@ function prepaint() {
 }
 
 function drawUserPaintCells() {
-  if (USER_PAINT_CELLS.length > 0) {
+  if (paintCacheNeedsRedraw) {
+    updatePaintCache();
+  }
+
+  if (paintCacheCanvas && USER_PAINT_MAP.size > 0) {
     mainLayer.paint((ctx) => {
       ctx.globalCompositeOperation = "source-over";
       ctx.globalAlpha = 1;
-      for (const { row, col, color } of USER_PAINT_CELLS) {
-        ctx.fillStyle = color;
-        ctx.fillRect(col * CELL_DISTANCE, row * CELL_DISTANCE, CELL_SIZE, CELL_SIZE);
-      }
+      ctx.drawImage(paintCacheCanvas!, 0, 0);
     });
   }
 
@@ -932,61 +971,45 @@ export function setThemeColors({ bgColor, borderColor, cellHighlight, electronCo
 export function paintCell(row: number, col: number, color: string) {
   if (!shape.isAlive) return;
   const key = `${row},${col}`;
-  const idx = USER_PAINT_CELLS.findIndex((c) => `${c.row},${c.col}` === key);
-  if (idx !== -1) {
-    USER_PAINT_CELLS[idx].color = color;
-  } else {
-    USER_PAINT_CELLS.push({ row, col, color });
+  if (USER_PAINT_MAP.get(key) !== color) {
+    USER_PAINT_MAP.set(key, color);
+    paintCacheNeedsRedraw = true;
   }
 }
 
 export function eraseCell(row: number, col: number) {
   const key = `${row},${col}`;
-  for (let i = USER_PAINT_CELLS.length - 1; i >= 0; i--) {
-    if (`${USER_PAINT_CELLS[i].row},${USER_PAINT_CELLS[i].col}` === key) {
-      USER_PAINT_CELLS.splice(i, 1);
-    }
+  if (USER_PAINT_MAP.delete(key)) {
+    paintCacheNeedsRedraw = true;
   }
 }
 
 export function fillCells(startRow: number, startCol: number, fillColor: string) {
+  if (!shape.isAlive) return;
+
   const cd = CELL_DISTANCE;
   const maxRows = Math.ceil(window.innerHeight / cd);
   const maxCols = Math.ceil(window.innerWidth / cd);
 
   if (startRow < 0 || startRow >= maxRows || startCol < 0 || startCol >= maxCols) return;
 
-  const cellIndexMap = new Map<string, number>();
-  for (let i = 0; i < USER_PAINT_CELLS.length; i++) {
-    const c = USER_PAINT_CELLS[i];
-    cellIndexMap.set(`${c.row},${c.col}`, i);
-  }
-
   const startKey = `${startRow},${startCol}`;
-  const startIdx = cellIndexMap.get(startKey);
-  const targetColor = startIdx !== undefined ? USER_PAINT_CELLS[startIdx].color : null;
+  const targetColor = USER_PAINT_MAP.get(startKey) || null;
 
   if (targetColor === fillColor) return;
 
   const queue: [number, number][] = [[startRow, startCol]];
   const visited = new Set<string>([startKey]);
 
-  let count = 0;
-  const MAX_CELLS = 25000;
+  let filledCount = 0;
+  const MAX_FILL = 40000;
 
-  while (queue.length > 0 && count < MAX_CELLS) {
+  while (queue.length > 0 && filledCount < MAX_FILL) {
     const [r, c] = queue.shift()!;
-    count++;
+    filledCount++;
 
     const key = `${r},${c}`;
-    const idx = cellIndexMap.get(key);
-
-    if (idx !== undefined) {
-      USER_PAINT_CELLS[idx].color = fillColor;
-    } else {
-      cellIndexMap.set(key, USER_PAINT_CELLS.length);
-      USER_PAINT_CELLS.push({ row: r, col: c, color: fillColor });
-    }
+    USER_PAINT_MAP.set(key, fillColor);
 
     const neighbors: [number, number][] = [
       [r + 1, c],
@@ -997,19 +1020,20 @@ export function fillCells(startRow: number, startCol: number, fillColor: string)
 
     for (const [nr, nc] of neighbors) {
       if (nr < 0 || nr >= maxRows || nc < 0 || nc >= maxCols) continue;
+
       const nKey = `${nr},${nc}`;
       if (visited.has(nKey)) continue;
 
-      const nIdx = cellIndexMap.get(nKey);
-      const nColor = nIdx !== undefined ? USER_PAINT_CELLS[nIdx].color : null;
-
-      if (nColor === targetColor) {
+      const neighborColor = USER_PAINT_MAP.get(nKey) || null;
+      if (neighborColor === targetColor) {
         visited.add(nKey);
         queue.push([nr, nc]);
       }
     }
   }
-}   
+
+  paintCacheNeedsRedraw = true;
+}
 
 export function setCellSize(newSize: number) {
   CELL_SIZE = newSize;
@@ -1017,6 +1041,7 @@ export function setCellSize(newSize: number) {
   CELL_DISTANCE = CELL_SIZE + BORDER_WIDTH;
   updateGridOffsets();
   ACTIVE_ELECTRONS.length = 0;
+  paintCacheNeedsRedraw = true;
   drawGrid();
 }
 
@@ -1025,9 +1050,9 @@ export function getCellDistance() {
 }
 
 export function clearPainted() {
-  USER_PAINT_CELLS.length = 0;
+  USER_PAINT_MAP.clear();
+  paintCacheNeedsRedraw = true;
 }
-
 export function setPreview(cells: PaintedCell[]) {
   USER_PREVIEW_CELLS.length = 0;
   for (const c of cells) USER_PREVIEW_CELLS.push(c);
